@@ -127,7 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="chess.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
