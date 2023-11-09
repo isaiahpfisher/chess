@@ -2,6 +2,7 @@
 
 int main() {
     
+    cout << "WASSUP!";
 
     return 0;
 }
