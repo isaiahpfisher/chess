@@ -1,5 +1,8 @@
+#include "header.h"
 #pragma once
-class Pawn
-{
+class Pawn {
+public:
+	string symbol;
+
 };
 
