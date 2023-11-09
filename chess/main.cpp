@@ -8,7 +8,6 @@ int main() {
         cout << nums[i] << endl;
     }
     
-    cout << "WASSUP!";
 
     return 0;
 }
