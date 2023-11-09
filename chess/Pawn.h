@@ -2,7 +2,10 @@
 #pragma once
 class Pawn {
 public:
-	string symbol;
+	string symbol = "P";
+	string color;
+
+	Pawn(string color);
 
 };
 
