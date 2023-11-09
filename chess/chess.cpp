@@ -6,4 +6,8 @@ int main() {
     for (int i = 0; i < myFavoriteNumbers.size(); i++) {
         cout << myFavoriteNumbers[i] << endl;
     }
+
+    cout << "This is a test" << endl;
+
+    return 0;
 }
