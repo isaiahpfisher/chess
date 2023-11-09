@@ -8,4 +8,8 @@
 
 using namespace std;
 
+// Constant Declarations
+
+// Function Declarations
+
 #endif
