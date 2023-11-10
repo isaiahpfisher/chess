@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Piece.h"
+#include "pawn.h"
 
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
@@ -15,14 +16,14 @@ Board::Board() {
 	this->grid[0][7] = Piece(ROOK, BLACK);
 
 	// Black Second Row
-	this->grid[1][0] = Piece(PAWN, BLACK);
-	this->grid[1][1] = Piece(PAWN, BLACK);
-	this->grid[1][2] = Piece(PAWN, BLACK);
-	this->grid[1][3] = Piece(PAWN, BLACK);
-	this->grid[1][4] = Piece(PAWN, BLACK);
-	this->grid[1][5] = Piece(PAWN, BLACK);
-	this->grid[1][6] = Piece(PAWN, BLACK);
-	this->grid[1][7] = Piece(PAWN, BLACK);
+	this->grid[1][0] = Pawn(BLACK);
+	this->grid[1][1] = Pawn(BLACK);
+	this->grid[1][2] = Pawn(BLACK);
+	this->grid[1][3] = Pawn(BLACK);
+	this->grid[1][4] = Pawn(BLACK);
+	this->grid[1][5] = Pawn(BLACK);
+	this->grid[1][6] = Pawn(BLACK);
+	this->grid[1][7] = Pawn(BLACK);
 
 	// White First Row
 	this->grid[7][0] = Piece(ROOK, WHITE);
@@ -35,14 +36,14 @@ Board::Board() {
 	this->grid[7][7] = Piece(ROOK, WHITE);
 
 	// White Second Row
-	this->grid[6][0] = Piece(PAWN, WHITE);
-	this->grid[6][1] = Piece(PAWN, WHITE);
-	this->grid[6][2] = Piece(PAWN, WHITE);
-	this->grid[6][3] = Piece(PAWN, WHITE);
-	this->grid[6][4] = Piece(PAWN, WHITE);
-	this->grid[6][5] = Piece(PAWN, WHITE);
-	this->grid[6][6] = Piece(PAWN, WHITE);
-	this->grid[6][7] = Piece(PAWN, WHITE);
+	this->grid[6][0] = Pawn(WHITE);
+	this->grid[6][1] = Pawn(WHITE);
+	this->grid[6][2] = Pawn(WHITE);
+	this->grid[6][3] = Pawn(WHITE);
+	this->grid[6][4] = Pawn(WHITE);
+	this->grid[6][5] = Pawn(WHITE);
+	this->grid[6][6] = Pawn(WHITE);
+	this->grid[6][7] = Pawn(WHITE);
 }
 
 // prints the board
