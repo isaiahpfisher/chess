@@ -1,5 +1,5 @@
 #include "Pawn.h"
 
-Pawn::Pawn(string colorType) {
-	color = colorType;
+Pawn::Pawn(string color) {
+	this->color = color;
 }

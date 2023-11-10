@@ -10,8 +10,19 @@
 using namespace std;
 
 // Constant Declarations
+const char KING = 'K';
+const char QUEEN = 'Q';
+const char ROOK = 'R';
+const char KNIGHT = 'N';
+const char BISHOP = 'B';
+const char PAWN = 'P';
+const char EMPTY = 'E';
+const string WHITE = WHITE;
+const string BLACK = BLACK;
+const int CELL_SIZE = 6; // game looks best at this size
+#define WHITE_SQUARE 0xDB
+#define BLACK_SQUARE 0xFF
 
 // Function Declarations
-void testFunction();
 
 #endif
