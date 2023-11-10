@@ -2,6 +2,7 @@
 #include "Pawn.h"
 #include "Piece.h"
 #include "Board.h"
+#include "Empty.h"
 
 /*
  - If you run main() right now, you should see a board printed with the starting layout, except for one pawn moved two spaces forward.

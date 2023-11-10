@@ -1,6 +1,5 @@
 #include "Empty.h"
-#include "Piece.h"
 
-char Empty::format() { 
+char Empty::format() {
 	return EMPTY;
 }
