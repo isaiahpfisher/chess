@@ -62,6 +62,13 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
+	cout << "    ";
+	for (char letter = 65; letter < 73; letter++) {
+		cout << "  " << letter << "   ";
+	}
+
+	cout << endl << endl;
+
 	for (int row = 0; row < 8; row++) {
 		printLine(row);
 	}
@@ -70,6 +77,13 @@ void Board::print() {
 // prints a single row of the board
 void Board::printLine(int row) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
+
+		if (subRow == (CELL_SIZE / 4)) {
+			cout << (row + 1) << "   ";
+		} else {
+			cout << "    ";
+		}
+
 		for (int col = 0; col < 8; col++) {
 			for (int subCol = 0; subCol < CELL_SIZE; subCol++) {
 				if ((row + col) % 2 == 0) {
