@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "color.hpp"
 #include "Piece.h"
 #include "Pawn.h"
 #include "Rook.h"
@@ -71,11 +72,27 @@ void Board::printLine(int row) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 		for (int col = 0; col < 8; col++) {
 			for (int subCol = 0; subCol < CELL_SIZE; subCol++) {
-				if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
-					cout << getPieceAtPosition(row, col)->format();
+				if ((row + col) % 2 == 0) {
+					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
+						if (getPieceAtPosition(row, col)->color == WHITE) {
+							cout << dye::red_on_white(getPieceAtPosition(row, col)->type);
+						} else {
+							cout << dye::purple_on_white(getPieceAtPosition(row, col)->type);
+						}
+					} else {
+						cout << dye::on_white(" ");
+					}
 				}
 				else {
-					cout << char((row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE);
+					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
+						if (getPieceAtPosition(row, col)->color == WHITE) {
+							cout << dye::red_on_black(getPieceAtPosition(row, col)->type);
+						} else {
+							cout << dye::purple_on_black(getPieceAtPosition(row, col)->type);
+						}
+					} else {
+						cout << dye::on_black(" ");
+					}
 				}
 			}
 		}
@@ -88,6 +105,29 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 	return this->grid[row][col];
 }
 
+// moves a piece on the board
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
+
+	// get pieces/spaces
+	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
+	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
+
+	// check if startPiece is empty (which would be invalid)
+	if (startPiece->isEmpty()) {
+		cout << endl << "There's no piece at those starting coordinates";
+		return;
+	}
+
+	if (!endPiece->isEmpty()) {
+		cout << endl << "There's already a piece at those ending coordinates";
+		return;
+	}
+
+	delete this->grid[endRow][endCol];
+	this->grid[endRow][endCol] = startPiece;
+	this->grid[startRow][startCol] = new Empty();
+
+
+	
 
 }

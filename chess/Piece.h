@@ -9,5 +9,5 @@ public:
 	Piece(char type, string color);
 	bool isEmpty(); // check if Piece is empty
 	string getPossibleMoves(); // this is just a random function I was experimenting with
-	virtual char format() = 0;
+	//virtual bool isValidMove() = 0;
 };

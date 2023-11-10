@@ -4,8 +4,5 @@
 #pragma once
 class King : public Piece {
 public:
-	string color;
-
 	King(string color); // custom constructor
-	char format(); // returns a char representing the piece, either upper or lower depending on color
 };

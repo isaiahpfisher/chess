@@ -5,7 +5,3 @@ Bishop::Bishop(string color) {
 	this->color = color;
 	this->type = BISHOP;
 }
-
-char Bishop::format() {
-	return (this->color == WHITE ? 'B' : 'b');
-}

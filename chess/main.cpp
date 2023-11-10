@@ -15,6 +15,7 @@ int main() {
 
     Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
 
+
     game.print(); // prints the game.grid, pieces and all
 
     return 0;
