@@ -6,6 +6,7 @@
 #include "Queen.h"
 #include "Bishop.h"
 #include "Knight.h"
+#include "Empty.h"
 
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
@@ -30,6 +31,13 @@ Board::Board() {
 	this->grid[1][6] = new Pawn(BLACK);
 	this->grid[1][7] = new Pawn(BLACK);
 
+	// Empty Spaces
+	for (int row = 2; row < 6; row++) {
+		for (int col = 0; col < 8; col++) {
+			this->grid[row][col] = new Empty();
+		}
+	}
+
 	// White First Row
 	this->grid[7][0] = new Rook(WHITE);
 	this->grid[7][1] = new Knight(WHITE);
@@ -53,18 +61,22 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
+	int count = 0;
 	for (int row = 0; row < 8; row++) {
-		printLine(row);
+		printLine(row, count);
 	}
+
+	cout << endl << endl << count;
 }
 
 // prints a single row of the board
-void Board::printLine(int row) {
+void Board::printLine(int row, int &count) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 		for (int col = 0; col < 8; col++) {
 			for (int subCol = 0; subCol < CELL_SIZE; subCol++) {
 				if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 					cout << getPieceAtPosition(row, col)->format();
+					count++;
 				}
 				else {
 					cout << char((row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE);
