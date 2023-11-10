@@ -1,4 +1,10 @@
 #include "Piece.h"
+#include "Pawn.h"
+#include "Rook.h"
+#include "King.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
 
 // default constructor - this is what empty spaces on the board will have
 Piece::Piece() {

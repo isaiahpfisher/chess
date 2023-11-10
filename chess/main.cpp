@@ -14,12 +14,6 @@ int main() {
 
     Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
 
-    
-    // simulating moving left-most black pawn to spaces forward
-    game.grid[1][0] = Piece(); // sets pawn's current location to empty
-    game.grid[3][0] = Pawn(BLACK); // sets pawn's new location to two spaces forward
-
-
     game.print(); // prints the game.grid, pieces and all
 
     return 0;
