@@ -61,22 +61,18 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
-	int count = 0;
 	for (int row = 0; row < 8; row++) {
-		printLine(row, count);
+		printLine(row);
 	}
-
-	cout << endl << endl << count;
 }
 
 // prints a single row of the board
-void Board::printLine(int row, int &count) {
+void Board::printLine(int row) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 		for (int col = 0; col < 8; col++) {
 			for (int subCol = 0; subCol < CELL_SIZE; subCol++) {
 				if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 					cout << getPieceAtPosition(row, col)->format();
-					count++;
 				}
 				else {
 					cout << char((row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE);
