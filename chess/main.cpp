@@ -9,8 +9,8 @@ int main() {
 
     
     // simulating moving left-most black pawn to spaces forward
-    game.grid[1][0] = Piece(); // sets current location of pawn to empty
-    game.grid[3][0] = Piece(PAWN, BLACK);
+    game.grid[1][0] = Piece(); // sets pawn's current location to empty
+    game.grid[3][0] = Piece(PAWN, BLACK); // sets pawn's new location to two spaces forward
 
 
     game.print(); // prints the game.grid, pieces and all
