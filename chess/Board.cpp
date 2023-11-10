@@ -1,6 +1,6 @@
 #include "Board.h"
 #include "Piece.h"
-#include "pawn.h"
+#include "Pawn.h"
 
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
@@ -70,7 +70,7 @@ void Board::printLine(int row) {
 	}
 }
 
-// returns the piece at the given position
+// returns the Piece at the given position
 Piece Board::getPieceAtPosition(int row, int col) {
 	return this->grid[row][col];
 }
