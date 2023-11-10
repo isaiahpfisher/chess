@@ -20,11 +20,7 @@ Piece::Piece(char type, string color) {
 
 // to check if a space on the board is empty (every element in the Board.grid always has a Piece in it, but it has a special value if empty
 bool Piece::isEmpty() {
-	bool isEmpty = false;
-	Empty* empty = dynamic_cast<Empty*>(this);
-	if (empty) { isEmpty = true; }
-	delete empty;
-	return isEmpty;
+	return this->type == EMPTY;
 }
 
 // WIP - just a filler function for how I'm (Isaiah) thinking things will be set up

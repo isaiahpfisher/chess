@@ -3,6 +3,7 @@
 #pragma once
 class Empty : public Piece {
 public:
-
+	char type = EMPTY;
+	char format();
 };
 
