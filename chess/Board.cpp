@@ -62,7 +62,7 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
-	cout << "    ";
+	cout << "      ";
 	for (char letter = 65; letter < 73; letter++) {
 		cout << "  " << letter << "   ";
 	}
@@ -79,9 +79,9 @@ void Board::printLine(int row) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 
 		if (subRow == (CELL_SIZE / 4)) {
-			cout << (row + 1) << "   ";
+			cout << "  " << (row + 1) << "   ";
 		} else {
-			cout << "    ";
+			cout << "      ";
 		}
 
 		for (int col = 0; col < 8; col++) {
