@@ -3,11 +3,9 @@
 class Board {
 public:
 	Piece grid[8][8];
-	Board();
-	Piece getPieceAtPosition(int row, int col);
-	void print();
-	void printLine(int row);
-	void printCell(int row, int col);
-	void printCell(Piece piece, int row, int col);
+	Board(); // default constructor for Board (fills grid with starting layout)
+	Piece getPieceAtPosition(int row, int col); // returns the Piece the given row x col
+	void print(); // prints the current board
+	void printLine(int row); // helper function for print()
 };
 
