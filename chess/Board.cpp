@@ -145,6 +145,7 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	print();
 }
 
+// Gets the input for moves
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
@@ -166,6 +167,7 @@ void Board::getInput() {
 	}
 }
 
+// Checks if moves are valid
 string Board::checkMove(string input, int startRow, int startCol, int endRow, int endCol){
 	
 	// get pieces/spaces
@@ -194,8 +196,10 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	// en passant and castling
 	// first move of pawn
 	// pawn promotion
+	// check if it is red or purples move.
 }
 
+// Prints the error message is wrong move or does the move is valid
 void Board::printErrorMessage(string error) {
 	cout << dye::white_on_red(" " + error + " ") << endl;
 }
