@@ -62,15 +62,17 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
-	cout << "      ";
-	for (char letter = 'A'; letter <= 'H'; letter++) {
-		cout << "  " << letter << "   ";
-	}
 
 	cout << endl << endl;
 
 	for (int row = 0; row < 8; row++) {
 		printLine(row);
+	}
+
+	cout << endl;
+	cout << "      ";
+	for (char letter = 'A'; letter <= 'H'; letter++) {
+		cout << "  " << letter << "   ";
 	}
 }
 
@@ -79,7 +81,7 @@ void Board::printLine(int row) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 
 		if (subRow == (CELL_SIZE / 4)) {
-			cout << "  " << (row + 1) << "   ";
+			cout << "  " << (8 - row) << "   ";
 		} else {
 			cout << "      ";
 		}
@@ -122,6 +124,7 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 // moves a piece on the board
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
+
 	// get pieces/spaces
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
 	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
@@ -143,7 +146,7 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
 
 	
-
+	this->print();
 }
 
 void Board::getInput() {
@@ -151,9 +154,10 @@ void Board::getInput() {
 	int startRow, startCol, endRow, endCol;
 	cout << endl << endl << "What's your next move? (ex. A3 B5)" << endl;
 	getline(cin, input);
-	startCol = input[0] - 'A';
-	startRow = input[1] - '0' - 1;
-	endCol = input[3] - 'A';
-	endRow = input[4] - '0' - 1;
+	startCol = toupper(input[0]) - 'A';
+	startRow = 8 - (input[1] - '0');
+	endCol = toupper(input[3]) - 'A';
+	endRow = 8 - (input[4] - '0');
+	
 	move(startRow, startCol, endRow, endCol);
 }

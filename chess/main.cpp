@@ -20,7 +20,5 @@ int main() {
 
     game.getInput();
 
-    game.print();
-
     return 0;
 }
