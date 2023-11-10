@@ -5,4 +5,5 @@
 class King : public Piece {
 public:
 	King(string color); // custom constructor
+	bool isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
 };

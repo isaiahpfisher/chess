@@ -9,5 +9,7 @@ public:
 	void printLine(int row); // helper function for print()
 	void move(int startRow, int startCol, int endRow, int endCol);
 	void getInput();
+	string checkMove(string input, int startRow, int startCol, int endRow, int endCol);
+	void printErrorMessage(string error);
 };
 

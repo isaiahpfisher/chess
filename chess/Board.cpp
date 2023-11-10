@@ -62,6 +62,8 @@ Board::Board() {
 
 // prints the board
 void Board::print() {
+	
+	system("cls");
 
 	cout << endl << endl;
 
@@ -74,6 +76,7 @@ void Board::print() {
 	for (char letter = 'A'; letter <= 'H'; letter++) {
 		cout << "  " << letter << "   ";
 	}
+	cout << endl << endl;
 }
 
 // prints a single row of the board
@@ -124,40 +127,75 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 // moves a piece on the board
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
-
 	// get pieces/spaces
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
 	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
-
-	// check if startPiece is empty (which would be invalid)
-	if (startPiece->isEmpty()) {
-		cout << endl << "There's no piece at those starting coordinates";
-		return;
-	}
-
-	if (!endPiece->isEmpty()) {
-		cout << endl << "There's already a piece at those ending coordinates";
-		return;
-	}
 
 	delete this->grid[endRow][endCol];
 	this->grid[endRow][endCol] = startPiece;
 	this->grid[startRow][startCol] = new Empty();
 
-
+	// Check if check or checkmate
+	// Check if a piece can move to the spot chosen
+	// check if move is on same team
+	// en passant and castling
+	// first move of pawn
+	// pawn promotion
 	
-	this->print();
+	print();
 }
 
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
-	cout << endl << endl << "What's your next move? (ex. A3 B5)" << endl;
+	cout << "What's your next move? (ex. A3 B5  or  a3 b5)" << endl;
 	getline(cin, input);
 	startCol = toupper(input[0]) - 'A';
 	startRow = 8 - (input[1] - '0');
 	endCol = toupper(input[3]) - 'A';
 	endRow = 8 - (input[4] - '0');
 	
-	move(startRow, startCol, endRow, endCol);
+	string checkResult = checkMove(input, startRow, startCol, endRow, endCol);
+	if (checkResult == "") {
+		move(startRow, startCol, endRow, endCol);
+	}
+	else {
+		print();
+		printErrorMessage(checkResult);
+		getInput();
+	}
+}
+
+string Board::checkMove(string input, int startRow, int startCol, int endRow, int endCol){
+	
+	// get pieces/spaces
+	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
+	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
+	string checkResult; // What the error message will say, blank if valid
+
+	// Checks if the move is on the board
+	if (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7) {
+		checkResult = "Invalid Move (" + input + "). Try Again.";
+	}
+
+	// Check if startPiece is invalid
+	else if (startPiece->isEmpty()) {
+		checkResult = "No piece at first coordinate. Try Again.";
+	}
+	// Checks if move is on top of same team
+	else if (startPiece->color == endPiece->color) {
+		checkResult = "Can't move on top of own piece. Try Again.";
+	}
+
+	return checkResult;
+
+	// Check if check or checkmate
+	// Check if a piece can move to the spot chosen
+	// en passant and castling
+	// first move of pawn
+	// pawn promotion
+}
+
+void Board::printErrorMessage(string error) {
+	cout << dye::white_on_red(" " + error + " ") << endl;
 }
