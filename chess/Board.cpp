@@ -184,6 +184,12 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	else if (startPiece->isEmpty()) {
 		checkResult = "No piece at first coordinate. Try Again.";
 	}
+
+	// Check if startPiece is from the right team
+	else if (getCurrentTurn() != startPiece->color) {
+		checkResult = "It's " + (getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
+	}
+
 	// Checks if move is on top of same team
 	else if (startPiece->color == endPiece->color) {
 		checkResult = "Can't move on top of own piece. Try Again.";
@@ -202,4 +208,9 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 // Prints the error message is wrong move or does the move is valid
 void Board::printErrorMessage(string error) {
 	cout << dye::white_on_red(" " + error + " ") << endl;
+}
+
+// returns the color of whatever team's turn it is
+string Board::getCurrentTurn() {
+	return (turnCount % 2 == WHITE_TURN ? WHITE : BLACK);
 }

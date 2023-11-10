@@ -19,6 +19,8 @@ const char PAWN = 'P';
 const char EMPTY = 'E';
 const string WHITE = "RED";
 const string BLACK = "PURPLE";
+const int WHITE_TURN = 1;
+const int BLACK_TURN = 0;
 const int CELL_SIZE = 6; // game looks best at this size
 
 // Function Declarations
