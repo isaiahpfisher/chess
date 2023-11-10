@@ -16,11 +16,6 @@ bool Piece::isEmpty() {
 	return this->type == EMPTY;
 }
 
-// converts the piece to a formatted char to be printed on the board
-char Piece::format() {
-	return (this->color == WHITE ? toupper(this->type) : tolower(this->type));
-}
-
 // WIP - just a filler function for how I'm (Isaiah) thinking things will be set up
 string Piece::getPossibleMoves() {
 	switch (this->type) {

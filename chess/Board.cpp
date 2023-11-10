@@ -11,44 +11,44 @@
 Board::Board() {
 
 	// Black First Row
-	this->grid[0][0] = Rook(BLACK);
-	this->grid[0][1] = Knight(BLACK);
-	this->grid[0][2] = Bishop(BLACK);
-	this->grid[0][3] = King(BLACK);
-	this->grid[0][4] = Queen(BLACK);
-	this->grid[0][5] = Bishop(BLACK);
-	this->grid[0][6] = Knight(BLACK);
-	this->grid[0][7] = Rook(BLACK);
+	this->grid[0][0] = &Rook(BLACK);
+	this->grid[0][1] = &Knight(BLACK);
+	this->grid[0][2] = &Bishop(BLACK);
+	this->grid[0][3] = &King(BLACK);
+	this->grid[0][4] = &Queen(BLACK);
+	this->grid[0][5] = &Bishop(BLACK);
+	this->grid[0][6] = &Knight(BLACK);
+	this->grid[0][7] = &Rook(BLACK);
 
 	// Black Second Row
-	this->grid[1][0] = Pawn(BLACK);
-	this->grid[1][1] = Pawn(BLACK);
-	this->grid[1][2] = Pawn(BLACK);
-	this->grid[1][3] = Pawn(BLACK);
-	this->grid[1][4] = Pawn(BLACK);
-	this->grid[1][5] = Pawn(BLACK);
-	this->grid[1][6] = Pawn(BLACK);
-	this->grid[1][7] = Pawn(BLACK);
+	this->grid[1][0] = &Pawn(BLACK);
+	this->grid[1][1] = &Pawn(BLACK);
+	this->grid[1][2] = &Pawn(BLACK);
+	this->grid[1][3] = &Pawn(BLACK);
+	this->grid[1][4] = &Pawn(BLACK);
+	this->grid[1][5] = &Pawn(BLACK);
+	this->grid[1][6] = &Pawn(BLACK);
+	this->grid[1][7] = &Pawn(BLACK);
 
 	// White First Row
-	this->grid[7][0] = Rook(WHITE);
-	this->grid[7][1] = Knight(WHITE);
-	this->grid[7][2] = Bishop(WHITE);
-	this->grid[7][3] = King(WHITE);
-	this->grid[7][4] = Queen(WHITE);
-	this->grid[7][5] = Bishop(WHITE);
-	this->grid[7][6] = Knight(WHITE);
-	this->grid[7][7] = Rook(WHITE);
+	this->grid[7][0] = &Rook(WHITE);
+	this->grid[7][1] = &Knight(WHITE);
+	this->grid[7][2] = &Bishop(WHITE);
+	this->grid[7][3] = &King(WHITE);
+	this->grid[7][4] = &Queen(WHITE);
+	this->grid[7][5] = &Bishop(WHITE);
+	this->grid[7][6] = &Knight(WHITE);
+	this->grid[7][7] = &Rook(WHITE);
 
 	// White Second Row
-	this->grid[6][0] = Pawn(WHITE);
-	this->grid[6][1] = Pawn(WHITE);
-	this->grid[6][2] = Pawn(WHITE);
-	this->grid[6][3] = Pawn(WHITE);
-	this->grid[6][4] = Pawn(WHITE);
-	this->grid[6][5] = Pawn(WHITE);
-	this->grid[6][6] = Pawn(WHITE);
-	this->grid[6][7] = Pawn(WHITE);
+	this->grid[6][0] = &Pawn(WHITE);
+	this->grid[6][1] = &Pawn(WHITE);
+	this->grid[6][2] = &Pawn(WHITE);
+	this->grid[6][3] = &Pawn(WHITE);
+	this->grid[6][4] = &Pawn(WHITE);
+	this->grid[6][5] = &Pawn(WHITE);
+	this->grid[6][6] = &Pawn(WHITE);
+	this->grid[6][7] = &Pawn(WHITE);
 }
 
 // prints the board
