@@ -3,6 +3,14 @@
 #include "Piece.h"
 #include "Board.h"
 
+/*
+ - If you run main() right now, you should see a board printed with the starting layout, except for one pawn moved two spaces forward.
+ - It's ugly, but it's a starting point.
+ - Black pieces are represented by CAPITAL letters, and white pieces are represented by lowercase letters.
+ - Kings are represented with K's and Knights are represented with N's.
+*/
+
+
 int main() {
 
     Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
