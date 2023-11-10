@@ -22,9 +22,6 @@ char Piece::format() {
 }
 
 // WIP - just a filler function for how I'm (Isaiah) thinking things will be set up
-
-// This just seems like it would have turns for moves but we don't want that we want them to choose who is gonna move.
-
 string Piece::getPossibleMoves() {
 	switch (this->type) {
 		case KING:
