@@ -1,19 +1,24 @@
 #include "Board.h"
 #include "Piece.h"
 #include "Pawn.h"
+#include "Rook.h"
+#include "King.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
 
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
 
 	// Black First Row
-	this->grid[0][0] = Piece(ROOK, BLACK);
-	this->grid[0][1] = Piece(KNIGHT, BLACK);
-	this->grid[0][2] = Piece(BISHOP, BLACK);
-	this->grid[0][3] = Piece(KING, BLACK);
-	this->grid[0][4] = Piece(QUEEN, BLACK);
-	this->grid[0][5] = Piece(BISHOP, BLACK);
-	this->grid[0][6] = Piece(KNIGHT, BLACK);
-	this->grid[0][7] = Piece(ROOK, BLACK);
+	this->grid[0][0] = Rook(BLACK);
+	this->grid[0][1] = Knight(BLACK);
+	this->grid[0][2] = Bishop(BLACK);
+	this->grid[0][3] = King(BLACK);
+	this->grid[0][4] = Queen(BLACK);
+	this->grid[0][5] = Bishop(BLACK);
+	this->grid[0][6] = Knight(BLACK);
+	this->grid[0][7] = Rook(BLACK);
 
 	// Black Second Row
 	this->grid[1][0] = Pawn(BLACK);
@@ -26,14 +31,14 @@ Board::Board() {
 	this->grid[1][7] = Pawn(BLACK);
 
 	// White First Row
-	this->grid[7][0] = Piece(ROOK, WHITE);
-	this->grid[7][1] = Piece(KNIGHT, WHITE);
-	this->grid[7][2] = Piece(BISHOP, WHITE);
-	this->grid[7][3] = Piece(KING, WHITE);
-	this->grid[7][4] = Piece(QUEEN, WHITE);
-	this->grid[7][5] = Piece(BISHOP, WHITE);
-	this->grid[7][6] = Piece(KNIGHT, WHITE);
-	this->grid[7][7] = Piece(ROOK, WHITE);
+	this->grid[7][0] = Rook(WHITE);
+	this->grid[7][1] = Knight(WHITE);
+	this->grid[7][2] = Bishop(WHITE);
+	this->grid[7][3] = King(WHITE);
+	this->grid[7][4] = Queen(WHITE);
+	this->grid[7][5] = Bishop(WHITE);
+	this->grid[7][6] = Knight(WHITE);
+	this->grid[7][7] = Rook(WHITE);
 
 	// White Second Row
 	this->grid[6][0] = Pawn(WHITE);
