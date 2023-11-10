@@ -91,3 +91,7 @@ void Board::printLine(int row, int &count) {
 Piece* Board::getPieceAtPosition(int row, int col) {
 	return this->grid[row][col];
 }
+
+void Board::move(int startRow, int startCol, int endRow, int endCol) {
+
+}

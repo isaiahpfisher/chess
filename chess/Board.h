@@ -7,5 +7,6 @@ public:
 	Piece* getPieceAtPosition(int row, int col); // returns the Piece the given row x col
 	void print(); // prints the current board
 	void printLine(int row, int &count); // helper function for print()
+	void move(int startRow, int startCol, int endRow, int endCol);
 };
 
