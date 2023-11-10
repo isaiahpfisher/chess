@@ -149,7 +149,8 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
-	cout << "What's your next move? (ex. A3 B5  or  a3 b5)" << endl;
+	cout << (getCurrentTurn()== WHITE ? dye::red(WHITE) : dye::purple(BLACK))
+		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl;
 	getline(cin, input);
 	startCol = toupper(input[0]) - 'A';
 	startRow = 8 - (input[1] - '0');
