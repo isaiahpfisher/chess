@@ -63,7 +63,7 @@ Board::Board() {
 // prints the board
 void Board::print() {
 	cout << "      ";
-	for (char letter = 65; letter < 73; letter++) {
+	for (char letter = 'A'; letter <= 'H'; letter++) {
 		cout << "  " << letter << "   ";
 	}
 
@@ -144,4 +144,16 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
 	
 
+}
+
+void Board::getInput() {
+	string input;
+	int startRow, startCol, endRow, endCol;
+	cout << endl << endl << "What's your next move? (ex. A3 B5)" << endl;
+	getline(cin, input);
+	startCol = input[0] - 'A';
+	startRow = input[1] - '0' - 1;
+	endCol = input[3] - 'A';
+	endRow = input[4] - '0' - 1;
+	move(startRow, startCol, endRow, endCol);
 }

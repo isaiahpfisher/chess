@@ -8,5 +8,6 @@ public:
 	void print(); // prints the current board
 	void printLine(int row); // helper function for print()
 	void move(int startRow, int startCol, int endRow, int endCol);
+	void getInput();
 };
 

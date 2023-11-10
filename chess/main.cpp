@@ -18,5 +18,9 @@ int main() {
 
     game.print(); // prints the game.grid, pieces and all
 
+    game.getInput();
+
+    game.print();
+
     return 0;
 }
