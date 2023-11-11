@@ -14,7 +14,7 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 
 	// moved non-linearly
 	if ((rowDiff != colDiff) && !(rowDiff == 0 || colDiff == 0)) {
-		checkResult = "Kings can only move lieanrly. Try Again.";
+		checkResult = "Kings can only move linearly. Try Again.";
 	}
 	// moved more than one space
 	else if (rowDiff > 2 || colDiff > 2) {
