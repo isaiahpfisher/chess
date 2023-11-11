@@ -189,7 +189,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	string checkResult; // What the error message will say, blank if valid
 
 	// Checks if the move is on the board
-	if (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7) {
+	if (input != "-1" && (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7)) {
 		checkResult = "Invalid Move (" + input + "). Try Again.";
 	}
 
@@ -248,7 +248,7 @@ bool Board::isCheckmate() {
 	Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
 
 	// return false if king isn't in check at start of turn
-	if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
+	if (!currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
 
 
 	// check for any possible moves that won't make the king in check
@@ -258,7 +258,7 @@ bool Board::isCheckmate() {
 			if (!piece->isEmpty() && piece->color == currentColor) {
 				for (int subRow = 0; subRow < 8; subRow++) {
 					for (int subCol = 0; subCol < 8; subCol++) {
-						if (!currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+						if (this->checkMove("-1", row, col, subRow, subCol) == "" && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							return false; // return false at first sign of a move that wouldn't put the king in check
 						}
 					}
