@@ -10,7 +10,7 @@ string Rook::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 	string checkResult;
 	
 	if (startCol != endCol && startRow != endRow) {
-		checkResult = "Rook can only move forward, left, or right. Try Again.";
+		checkResult = "Rook can't move diagonally. Try again.";
 	}
 	else if (this->color == WHITE && !(grid[startRow - 1][startCol]->isEmpty())) {
 		checkResult = "Rook can't move if something is next to it or in front of it. Try Again.";
