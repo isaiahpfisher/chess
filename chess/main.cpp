@@ -8,7 +8,7 @@ int main() {
 
     Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
 
-    while (true) {
+    while (game.isCheckmate()) {
         game.print(); // prints the game.grid, pieces and all
         game.getInput(); // asks for and receives input
         game.turnCount++;
