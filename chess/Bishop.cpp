@@ -7,7 +7,15 @@ Bishop::Bishop(string color) {
 }
 
 string Bishop::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
-	return "";
+	string checkResult;
+	int rowDiff = abs(startRow - endRow);
+	int colDiff = abs(startCol - endCol);
+
+	if (rowDiff != colDiff) {
+		checkResult = "Can only move diaganally. Try Again.";
+	}
+
+	return checkResult;
 }
 
 string Bishop::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
