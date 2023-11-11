@@ -123,10 +123,3 @@ bool King::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, 
 
 	return isInCheck;
 }
-
-/*
-CHECKMATE:
-- for every spot on the board
-	- would it be a valid move for the king to move there
-	- or is there any other piece that could get the king out of check
-*/

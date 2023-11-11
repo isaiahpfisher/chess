@@ -20,5 +20,6 @@ public:
 	string checkMove(string input, int startRow, int startCol, int endRow, int endCol);
 	void printErrorMessage(string error);
 	string getCurrentTurn();
+	bool isCheckmate();
 };
 

@@ -243,6 +243,17 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 				checkResult = inCheckResult;
 			}
 		}
+		/*Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+		string inCheckResult;
+		if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) {
+			inCheckResult = "You're king is in check. Try Again.";
+		}
+		else if (currentKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+			inCheckResult = "You can't put your king in check. Try Again.";
+		}
+		if (currentKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+			checkResult = inCheckResult;
+		}*/
 	}
 
 	return checkResult;
@@ -263,3 +274,34 @@ void Board::printErrorMessage(string error) {
 string Board::getCurrentTurn() {
 	return (turnCount % 2 == WHITE_TURN ? WHITE : BLACK);
 }
+
+bool Board::isCheckmate() {
+	string currentColor = this->getCurrentTurn();
+	Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+
+	// return false if king isn't in check at start of turn
+	if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
+
+	// check for any possible moves that won't make the king in check
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->getPieceAtPosition(row, col);
+			if (!piece->isEmpty() && piece->color == currentColor) {
+				for (int subRow = 0; subRow < 8; subRow++) {
+					for (int subCol = 0; subCol < 8; subCol++) {
+						if (!currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+							return false; // return false at first sign of a move that wouldn't put the king in check
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+CHECKMATE:
+- for every spot on the board
+	- would it be a valid move for the king to move there
+	- or is there any other piece that could get the king out of check
+*/
