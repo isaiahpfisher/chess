@@ -7,6 +7,8 @@ public:
 	string color; // color (WHITE, BLACK)
 	bool enPassant = false;
 	bool hasMoved = false;
+	int row;
+	int col;
 	Piece(); // default constructor
 	Piece(char type, string color);
 	bool isEmpty(); // check if Piece is empty
