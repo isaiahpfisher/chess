@@ -16,9 +16,9 @@ Board::Board() {
 	this->grid[0][0] = new Rook(BLACK);
 	this->grid[0][1] = new Knight(BLACK);
 	this->grid[0][2] = new Bishop(BLACK);
-	this->grid[0][3] = new King(BLACK, 0, 3);
-	this->blackKing = this->grid[0][3];
-	this->grid[0][4] = new Queen(BLACK);
+	this->grid[0][3] = new Queen(BLACK);
+	this->grid[0][4] = new King(BLACK, 0, 4);
+	this->blackKing = this->grid[0][4];
 	this->grid[0][5] = new Bishop(BLACK);
 	this->grid[0][6] = new Knight(BLACK);
 	this->grid[0][7] = new Rook(BLACK);
@@ -44,9 +44,9 @@ Board::Board() {
 	this->grid[7][0] = new Rook(WHITE);
 	this->grid[7][1] = new Knight(WHITE);
 	this->grid[7][2] = new Bishop(WHITE);
-	this->grid[7][3] = new King(WHITE, 7, 3);
-	this->whiteKing = this->grid[7][3];
-	this->grid[7][4] = new Queen(WHITE);
+	this->grid[7][3] = new Queen(WHITE);
+	this->grid[7][4] = new King(WHITE, 7, 4);
+	this->whiteKing = this->grid[7][4];
 	this->grid[7][5] = new Bishop(WHITE);
 	this->grid[7][6] = new Knight(WHITE);
 	this->grid[7][7] = new Rook(WHITE);
@@ -250,6 +250,7 @@ bool Board::isCheckmate() {
 	// return false if king isn't in check at start of turn
 	if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
 
+
 	// check for any possible moves that won't make the king in check
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
@@ -265,4 +266,5 @@ bool Board::isCheckmate() {
 			}
 		}
 	}
+	return true;
 }

@@ -22,8 +22,7 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 
 	// the spot the king passes through
 	int midRow = (this->color == BLACK ? 0 : 7);
-	int midCol = (endCol < startCol ? 2 : 4);
-	/*Piece* midSpot = grid[midRow][midCol];*/
+	int midCol = (endCol < startCol ? 3 : 5);
 
 	// moved non-linearly
 	if ((rowDiff != colDiff) && !(rowDiff == 0 || colDiff == 0)) {
@@ -36,7 +35,7 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 			checkResult = "Can't castle if king or rook has already moved. Try Again.";
 		}
 		// any pieces between them
-		else if (endCol > startCol && !grid[rookRow][rookCol - 1]->isEmpty()) {
+		else if (endCol < startCol && !grid[rookRow][rookCol + 1]->isEmpty()) {
 			checkResult = "Can't castle if there are pieces in the way. Try Again.";
 		}
 		// currently in check
