@@ -7,7 +7,16 @@ Rook::Rook(string color) {
 }
 
 string Rook::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
-	return "true";
+	string checkResult;
+	
+	if (!(startCol == endCol && startRow != endRow)) {
+		checkResult = "Rook can only move forward, left, or right. Try Again.";
+	}
+	else if (startCol != endCol && startRow == endRow) {
+		checkResult = "Rook can only move forward, left, or right. Try Again.";
+	}
+
+	return checkResult;
 }
 
 string Rook::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
