@@ -142,6 +142,8 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	// first move of pawn
 	// pawn promotion
 	
+	this->lastPieceMoved = startPiece;
+	delete startPiece;
 	print();
 }
 
@@ -149,8 +151,8 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
-	cout << (getCurrentTurn()== WHITE ? dye::red(WHITE) : dye::purple(BLACK))
-		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl;
+	cout << " >> " << (getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK))
+		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl << " >> ";
 	getline(cin, input);
 	startCol = toupper(input[0]) - 'A';
 	startRow = 8 - (input[1] - '0');
@@ -195,6 +197,9 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	else if (startPiece->color == endPiece->color) {
 		checkResult = "Can't move on top of own piece. Try Again.";
 	}
+	else if (startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol) != "") {
+		checkResult = startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol);
+	}
 
 	return checkResult;
 
@@ -203,12 +208,11 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	// en passant and castling
 	// first move of pawn
 	// pawn promotion
-	// check if it is red or purples move.
 }
 
 // Prints the error message is wrong move or does the move is valid
 void Board::printErrorMessage(string error) {
-	cout << dye::white_on_red(" " + error + " ") << endl;
+	cout << " >> " << dye::white_on_red(" " + error + " ") << endl;
 }
 
 // returns the color of whatever team's turn it is

@@ -6,6 +6,6 @@ King::King(string color) {
 	this->type = KING;
 }
 
-bool King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
-	return true;
+string King::isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol) {
+	return "true";
 }

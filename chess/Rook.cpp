@@ -6,6 +6,6 @@ Rook::Rook(string color) {
 	this->type = ROOK;
 }
 
-bool Rook::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
-	return true;
+string Rook::isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol) {
+	return "true";
 }
