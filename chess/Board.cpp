@@ -217,31 +217,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 	// checking for check
 	if (checkResult == "") {
-		if (this->getCurrentTurn() == WHITE) {
-			string inCheckResult;
-			if (this->whiteKing->isInCheck(this->grid, -1, -1, -1, -1)) {
-				inCheckResult = "Your king is in check. Try Again.";
-			}
-			else if (this->whiteKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
-				inCheckResult = "You can't put your king in check. Try Again.";
-			}
-			if (this->whiteKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
-				checkResult = inCheckResult;
-			}
-		}
-		else {
-			string inCheckResult;
-			if (this->blackKing->isInCheck(this->grid, -1, -1, -1, -1)) {
-				inCheckResult = "Your king is in check. Try Again.";
-			}
-			else if (this->blackKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
-				inCheckResult = "You can't put your king in check. Try Again.";
-			}
-			if (this->blackKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
-				checkResult = inCheckResult;
-			}
-		}
-		/*Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+		Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
 		string inCheckResult;
 		if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) {
 			inCheckResult = "You're king is in check. Try Again.";
@@ -251,7 +227,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 		}
 		if (currentKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
 			checkResult = inCheckResult;
-		}*/
+		}
 	}
 
 	return checkResult;
