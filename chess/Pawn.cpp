@@ -1,39 +1,61 @@
 #include "Pawn.h"
-//#include "Piece.h"
+#include "Empty.h"
 
 Pawn::Pawn(string color) {
 	this->color = color;
 	this->type = PAWN;
 }
 
-string Pawn::isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol) {
+// checks if move is a valid move for a pawn
+string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	string checkResult;
 	int direction = (this->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
 
-	if (!(endRow * direction > startRow * direction) && (startCol == endCol)) {
-		checkResult = "Pawn can't go backwards. Try Again.";
+	// tried to go backwards
+	if ((endRow * direction < startRow * direction) && (startCol == endCol)) {
+		checkResult = "Pawns can't move backwards. Try again.";
 	}
-	else if (!(startCol == endCol)
-		&& !((abs(startRow - endRow) == 1 && abs(startCol - endCol) == 1 && !game->grid[endRow][endCol]->isEmpty()))
-		&& !(game->lastPieceMoved->enPassant) && abs(startRow - endRow) == 1 && abs(startCol - endCol) == 1) {
-		checkResult = "Pawn can only move forward unless taking enemy piece. Try Again.";
+	// tried to move sideways
+	else if (startRow == endRow) {
+		checkResult = "Pawns can't move sideways. Try again.";
 	}
-	else if (!(abs((startRow - endRow)) <= 1 + this->canMoveTwo)) { // checks if it has moved two forwards
-		checkResult = "Pawn can't move that many spaces. Try Again.";
+	// tried to move more than one/two spaces forward
+	else if (abs(startRow - endRow) > 1 + this->canMoveTwo) {
+		checkResult = "Pawns can't move that many spaces. Try again.";
 	}
-	else if ((startCol == endCol) && !game->grid[endRow][endCol]->isEmpty()) {
-		checkResult = "Pawn can only take an enemy diagonally. Try Again.";
+	// tried to move forward into enemny
+	else if ((startCol == endCol) && !grid[endRow][endCol]->isEmpty()) {
+		checkResult = "Pawns can only take an enemy diagonally. Try again.";
 	}
-	
-	if (checkResult == "") {
-		this->canMoveTwo = false;
+	// tried to move diagonallly (without taking enemy or en passant)
+	else if ((startCol != endCol) && (grid[endRow][endCol]->isEmpty()) && !(grid[endRow - direction][endCol]->enPassant)) {
+		checkResult = "Pawns can't move diagonally unless taking enemy. Try again.";
 	}
 
-	if (abs(startCol - endCol) == 2) {
-		this->enPassant = true;
-	}
 
 	return checkResult;
 }
 
-// set enPassant = false after one turn
+// performs pawn-specific actions after a move
+string Pawn::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+
+	string moveResult = translateMoves(startRow, startCol) + " to " + translateMoves(endRow, endCol);
+	int direction = (this->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
+
+	// if en passant happened, remove the enemy piece
+	if (grid[endRow - direction][endCol]->enPassant) {
+		grid[endRow - direction][endCol] = new Empty();
+	}
+
+	// if pawn moved two spaces (which is only possible on first turn), make it vulnerable to en passant attack
+	if (abs(startRow - endRow) == 2) {
+		this->enPassant = true;
+	}
+
+	// so this pawn can't move two ever again
+	this->canMoveTwo = false;
+
+	return moveResult;
+}
+
+// need to finish writing moveResult;

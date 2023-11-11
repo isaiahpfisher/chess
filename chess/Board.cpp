@@ -126,25 +126,28 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 
 // moves a piece on the board
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
-
-	// get pieces/spaces
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
-	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
 
-	delete this->grid[endRow][endCol];
-	this->grid[endRow][endCol] = startPiece;
-	this->grid[startRow][startCol] = new Empty();
+	// make the move
+	grid[endRow][endCol] = grid[startRow][startCol];
+	grid[startRow][startCol] = new Empty();
+
+	// do move-specific code and push move to move history
+	this->moveHistory.push_back(startPiece->move(this->grid, startRow, startCol, endRow, endCol));
+	
+	// reset enPassant of previous piece
+	lastPieceMoved->enPassant = false;
+
+	// set lastPieceMoved to current piece
+	lastPieceMoved = this->grid[endRow][endCol];
+
 
 	// Check if check or checkmate
 	// Check if a piece can move to the spot chosen
 	// check if move is on same team
-	// en passant and castling
+	// and castling
 	// first move of pawn
 	// pawn promotion
-	
-	this->lastPieceMoved = startPiece;
-	delete startPiece;
-	print();
 }
 
 // Gets the input for moves
@@ -154,6 +157,15 @@ void Board::getInput() {
 	cout << " >> " << (getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK))
 		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl << " >> ";
 	getline(cin, input);
+
+	// makes sure input is long enough
+	if (input.length() < 5) {
+		print();
+		printErrorMessage("Invalid input (" + input + "). Too short. Try again.");
+		getInput();
+		return;
+	}
+
 	startCol = toupper(input[0]) - 'A';
 	startRow = 8 - (input[1] - '0');
 	endCol = toupper(input[3]) - 'A';
@@ -180,24 +192,24 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 
 	// Checks if the move is on the board
 	if (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7) {
-		checkResult = "Invalid Move (" + input + "). Try Again.";
+		checkResult = "Invalid Move (" + input + "). Try again.";
 	}
 
 	// Check if startPiece is invalid
 	else if (startPiece->isEmpty()) {
-		checkResult = "No piece at first coordinate. Try Again.";
+		checkResult = "No piece at first coordinate. Try again.";
 	}
 
 	// Check if startPiece is from the right team
 	else if (getCurrentTurn() != startPiece->color) {
-		checkResult = "It's " + (getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
+		checkResult = "It's " + (getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try again.";
 	}
 
 	// Checks if move is on top of same team
 	else if (startPiece->color == endPiece->color) {
-		checkResult = "Can't move on top of own piece. Try Again.";
+		checkResult = "Can't move on top of own piece. Try again.";
 	}
-	else if (startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol) != "") {
+	else {
 		checkResult = startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol);
 	}
 

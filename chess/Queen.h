@@ -4,6 +4,7 @@
 class Queen : public Piece {
 public:
 	Queen(string color); // custom constructor
-	string isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol);
+	string isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
+	string move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
 };
 

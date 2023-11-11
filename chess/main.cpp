@@ -1,5 +1,6 @@
 #include "header.h"
 #include "Board.h"
+#include "Empty.h";
 
 
 int main() {

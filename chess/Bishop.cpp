@@ -6,6 +6,10 @@ Bishop::Bishop(string color) {
 	this->type = BISHOP;
 }
 
-string Bishop::isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol) {
+string Bishop::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	return "";
+}
+
+string Bishop::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return "";
 }

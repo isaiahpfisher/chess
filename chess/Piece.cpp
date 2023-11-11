@@ -23,22 +23,13 @@ bool Piece::isEmpty() {
 	return this->type == EMPTY;
 }
 
-// WIP - just a filler function for how I'm (Isaiah) thinking things will be set up
-string Piece::getPossibleMoves() {
-	switch (this->type) {
-		case KING:
-			return "King's Moves";
-		case QUEEN:
-			return "Queen's Moves";
-		case ROOK:
-			return "Rook's Moves";
-		case KNIGHT:
-			return "Knight's Moves";
-		case BISHOP:
-			return "Bishop's Moves";
-		case PAWN:
-			return "Pawn's Moves";
-		default:
-			return "Error";
-	}
+string Piece::translateMoves(int row, int col) {
+	string strCol(1, col + 'A');
+	string strRow(1, 8 - row + '0');
+	return strCol + strRow;
+
+	/*startCol = toupper(input[0]) - 'A';
+	startRow = 8 - (input[1] - '0');
+	endCol = toupper(input[3]) - 'A';
+	endRow = 8 - (input[4] - '0');*/
 }

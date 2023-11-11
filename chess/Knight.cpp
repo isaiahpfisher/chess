@@ -6,6 +6,10 @@ Knight::Knight(string color) {
 	this->type = KNIGHT;
 }
 
-string Knight::isValidMove(Board* game, int startRow, int startCol, int endRow, int endCol) {
+string Knight::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return "true";
+}
+
+string Knight::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	return "";
 }
