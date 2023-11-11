@@ -23,6 +23,7 @@ bool Piece::isEmpty() {
 	return this->type == EMPTY;
 }
 
+// translate x,y coordinates to a string for moveHistory
 string Piece::translateMoves(int row, int col) {
 	string strCol(1, col + 'A');
 	string strRow(1, 8 - row + '0');
@@ -32,4 +33,30 @@ string Piece::translateMoves(int row, int col) {
 	startRow = 8 - (input[1] - '0');
 	endCol = toupper(input[3]) - 'A';
 	endRow = 8 - (input[4] - '0');*/
+}
+
+
+bool Piece::isPieceInWay(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+
+	bool checkResult = false;
+
+	int maxRow = (startRow > endRow ? startRow : endRow);
+	int minRow = (startRow < endRow ? startRow : endRow);
+	int maxCol = (startCol > endCol ? startCol : endCol);
+	int minCol = (startCol < endCol ? startCol : endCol);
+
+	// loop through grid and check every piece between start and end
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			if (((row > minRow && row < maxRow) || (minRow == maxRow)) && ((col > minCol && col < maxCol) || (minCol == maxCol))) {
+				if (!grid[row][col]->isEmpty()) {
+					checkResult = true;
+				}
+			}
+		}
+	}
+
+	if (this->type == KNIGHT) { checkResult = false; }
+	
+	return checkResult;
 }

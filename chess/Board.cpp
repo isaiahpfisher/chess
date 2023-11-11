@@ -144,7 +144,6 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
 	// Check if check or checkmate
 	// Check if a piece can move to the spot chosen
-	// check if move is on same team
 	// and castling
 	// first move of pawn
 	// pawn promotion
@@ -208,6 +207,10 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	// Checks if move is on top of same team
 	else if (startPiece->color == endPiece->color) {
 		checkResult = "Can't move on top of own piece. Try again.";
+	}
+	// checking if piece is in the way
+	else if (startPiece->isPieceInWay(this->grid, startRow, startCol, endRow, endCol)) {
+		checkResult = "Can't jump over piece. Try again.";
 	}
 	else {
 		checkResult = startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol);
