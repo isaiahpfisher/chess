@@ -231,12 +231,6 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 
 	return checkResult;
-
-	// Check if check or checkmate
-	// Check if a piece can move to the spot chosen
-	// en passant and castling
-	// first move of pawn
-	// pawn promotion
 }
 
 // Prints the error message is wrong move or does the move is valid
@@ -272,10 +266,3 @@ bool Board::isCheckmate() {
 		}
 	}
 }
-
-/*
-CHECKMATE:
-- for every spot on the board
-	- would it be a valid move for the king to move there
-	- or is there any other piece that could get the king out of check
-*/
