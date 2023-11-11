@@ -2,6 +2,7 @@
 #include "Piece.h"
 #include "Empty.h"
 
+// 
 King::King(string color, int row, int col) {
 	this->color = color;
 	this->type = KING;
@@ -9,6 +10,7 @@ King::King(string color, int row, int col) {
 	this->col = col;
 }
 
+// 
 string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	string checkResult;
 
@@ -55,6 +57,7 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 	return checkResult;
 }
 
+// 
 string King::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 
 	int rowDiff = abs(startRow - endRow);
@@ -82,6 +85,7 @@ string King::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int
 	return "";
 }
 
+// 
 bool King::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 
 	bool isInCheck = false;
