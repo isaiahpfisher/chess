@@ -6,4 +6,5 @@ public:
 	char type = EMPTY;
 	string isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
 	string move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
+	bool isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol);
 };

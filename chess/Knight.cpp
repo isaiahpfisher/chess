@@ -14,7 +14,7 @@ string Knight::isValidMove(Piece* grid[8][8], int startRow, int startCol, int en
 	int colDiff = abs(startCol - endCol);
 
 	if ((startRow == endRow) || (startCol == endCol) || (rowDiff + colDiff != 3)) {
-		checkResult = "Knights can't move that way. Try again.";
+		checkResult = "Knights can't move that way. Try Again.";
 	}
 
 	return checkResult;
@@ -22,4 +22,8 @@ string Knight::isValidMove(Piece* grid[8][8], int startRow, int startCol, int en
 
 string Knight::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return "";
+}
+
+bool Knight::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	return false;
 }

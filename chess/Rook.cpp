@@ -10,12 +10,21 @@ string Rook::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 	string checkResult;
 	
 	if (startCol != endCol && startRow != endRow) {
-		checkResult = "Rook can't move diagonally. Try again.";
+		checkResult = "Rook can't move diagonally. Try Again.";
 	}
 
 	return checkResult;
 }
 
 string Rook::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	 
+
+
+	this->hasMoved = true;
+
 	return "";
+}
+
+bool Rook::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	return false;
 }

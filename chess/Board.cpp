@@ -16,7 +16,8 @@ Board::Board() {
 	this->grid[0][0] = new Rook(BLACK);
 	this->grid[0][1] = new Knight(BLACK);
 	this->grid[0][2] = new Bishop(BLACK);
-	this->grid[0][3] = new King(BLACK);
+	this->grid[0][3] = new King(BLACK, 0, 3);
+	this->blackKing = this->grid[0][3];
 	this->grid[0][4] = new Queen(BLACK);
 	this->grid[0][5] = new Bishop(BLACK);
 	this->grid[0][6] = new Knight(BLACK);
@@ -43,7 +44,8 @@ Board::Board() {
 	this->grid[7][0] = new Rook(WHITE);
 	this->grid[7][1] = new Knight(WHITE);
 	this->grid[7][2] = new Bishop(WHITE);
-	this->grid[7][3] = new King(WHITE);
+	this->grid[7][3] = new King(WHITE, 7, 3);
+	this->whiteKing = this->grid[7][3];
 	this->grid[7][4] = new Queen(WHITE);
 	this->grid[7][5] = new Bishop(WHITE);
 	this->grid[7][6] = new Knight(WHITE);
@@ -129,6 +131,7 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
 
 	// make the move
+	delete grid[endRow][endCol];
 	grid[endRow][endCol] = grid[startRow][startCol];
 	grid[startRow][startCol] = new Empty();
 
@@ -142,10 +145,8 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	lastPieceMoved = this->grid[endRow][endCol];
 
 
-	// Check if check or checkmate
-	// Check if a piece can move to the spot chosen
+	// Check if checkmate
 	// and castling
-	// first move of pawn
 	// pawn promotion
 }
 
@@ -153,14 +154,14 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
-	cout << " >> " << (getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK))
+	cout << " >> " << (this->getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK))
 		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl << " >> ";
 	getline(cin, input);
 
 	// makes sure input is long enough
 	if (input.length() < 5) {
 		print();
-		printErrorMessage("Invalid input (" + input + "). Too short. Try again.");
+		printErrorMessage("Invalid input (" + input + "). Too short. Try Again.");
 		getInput();
 		return;
 	}
@@ -191,29 +192,57 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 
 	// Checks if the move is on the board
 	if (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7) {
-		checkResult = "Invalid Move (" + input + "). Try again.";
+		checkResult = "Invalid Move (" + input + "). Try Again.";
 	}
 
 	// Check if startPiece is invalid
 	else if (startPiece->isEmpty()) {
-		checkResult = "No piece at first coordinate. Try again.";
+		checkResult = "No piece at first coordinate. Try Again.";
 	}
 
 	// Check if startPiece is from the right team
-	else if (getCurrentTurn() != startPiece->color) {
-		checkResult = "It's " + (getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try again.";
+	else if (this->getCurrentTurn() != startPiece->color) {
+		checkResult = "It's " + (this->getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
 	}
 
 	// Checks if move is on top of same team
 	else if (startPiece->color == endPiece->color) {
-		checkResult = "Can't move on top of own piece. Try again.";
+		checkResult = "Can't move on top of own piece. Try Again.";
 	}
 	// checking if piece is in the way
 	else if (startPiece->isPieceInWay(this->grid, startRow, startCol, endRow, endCol)) {
-		checkResult = "Can't jump over piece. Try again.";
+		checkResult = "Can't jump over piece. Try Again.";
 	}
-	else {
+	// checking if piece can do that move
+	else if (checkResult == "") {
 		checkResult = startPiece->isValidMove(this->grid, startRow, startCol, endRow, endCol);
+	}
+	// checking for check
+	if (checkResult == "") {
+		if (this->getCurrentTurn() == WHITE) {
+			string inCheckResult;
+			if (this->whiteKing->isInCheck(this->grid, -1, -1, -1, -1)) {
+				inCheckResult = "You're king is in check. Try Again.";
+			}
+			else if (this->whiteKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+				inCheckResult = "You can't put your king in check. Try Again.";
+			}
+			if (this->whiteKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+				checkResult = inCheckResult;
+			}
+		}
+		else {
+			string inCheckResult;
+			if (this->blackKing->isInCheck(this->grid, -1, -1, -1, -1)) {
+				inCheckResult = "You're king is in check. Try Again.";
+			}
+			else if (this->blackKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+				inCheckResult = "You can't put your king in check. Try Again.";
+			}
+			if (this->blackKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
+				checkResult = inCheckResult;
+			}
+		}
 	}
 
 	return checkResult;

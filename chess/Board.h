@@ -1,11 +1,15 @@
 #include "Piece.h"
 #include "Empty.h"
+#include "King.h"
 #pragma once
 class Board {
 public:
 	Piece* grid[8][8];
 	int turnCount = 1;
 	Piece* lastPieceMoved = new Empty();
+	Piece* whiteKing = new Empty();
+	Piece* blackKing = new Empty();
+
 	vector<string> moveHistory;
 	Board(); // default constructor for Board (fills grid with starting layout)
 	Piece* getPieceAtPosition(int row, int col); // returns the Piece the given row x col

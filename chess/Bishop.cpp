@@ -21,3 +21,7 @@ string Bishop::isValidMove(Piece* grid[8][8], int startRow, int startCol, int en
 string Bishop::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return "";
 }
+
+bool Bishop::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	return false;
+}
