@@ -146,8 +146,6 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 
 
 	// Check if checkmate
-	// and castling
-	// pawn promotion
 }
 
 // Gets the input for moves
@@ -222,7 +220,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 		if (this->getCurrentTurn() == WHITE) {
 			string inCheckResult;
 			if (this->whiteKing->isInCheck(this->grid, -1, -1, -1, -1)) {
-				inCheckResult = "You're king is in check. Try Again.";
+				inCheckResult = "Your king is in check. Try Again.";
 			}
 			else if (this->whiteKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
 				inCheckResult = "You can't put your king in check. Try Again.";
@@ -234,7 +232,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 		else {
 			string inCheckResult;
 			if (this->blackKing->isInCheck(this->grid, -1, -1, -1, -1)) {
-				inCheckResult = "You're king is in check. Try Again.";
+				inCheckResult = "Your king is in check. Try Again.";
 			}
 			else if (this->blackKing->isInCheck(this->grid, startRow, startCol, endRow, endCol)) {
 				inCheckResult = "You can't put your king in check. Try Again.";

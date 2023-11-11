@@ -21,6 +21,10 @@ string Queen::isValidMove(Piece* grid[8][8], int startRow, int startCol, int end
 }
 
 string Queen::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
+	
+	this->row = endRow;
+	this->col = endCol;
+
 	return "";
 }
 

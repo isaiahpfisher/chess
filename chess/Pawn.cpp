@@ -1,5 +1,10 @@
 #include "Pawn.h"
 #include "Empty.h"
+#include "Piece.h"
+#include "Rook.h"
+#include "Bishop.h"
+#include "Queen.h"
+#include "Knight.h"
 
 Pawn::Pawn(string color) {
 	this->color = color;
@@ -10,9 +15,13 @@ Pawn::Pawn(string color) {
 string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	string checkResult;
 	int direction = (this->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
-
+	
+	// moved more than one column to the side
+	if (abs(startCol - endCol) > 1) {
+		checkResult = "You SiCkO!!!!! Why are you trying to move that way. Try Again.";
+	}
 	// tried to go backwards
-	if ((endRow * direction < startRow * direction) && (startCol == endCol)) {
+	else if ((endRow * direction < startRow * direction) && (startCol == endCol)) {
 		checkResult = "Pawns can't move backwards. Try Again.";
 	}
 	// tried to move sideways
@@ -54,12 +63,57 @@ string Pawn::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int
 
 	// so this pawn can't move two ever again
 	this->canMoveTwo = false;
+	this->row = endRow;
+	this->col = endCol;
+
+	// 
+	if (endRow == (this->color == WHITE ? 0 : 7)) {
+		getPawnPromotion(grid);
+	}
 
 	return moveResult;
 }
 
+// 
+void Pawn::getPawnPromotion(Piece* grid[8][8]) {
+
+	char userChoice;
+	
+
+	cout << endl;
+	cout << " >> " << " Pawn Promotion: what would you like?" << endl;
+	cout << " >>  Q for Queen, R for Rook, B for Bishop, and N for Knight" << endl;
+	cout << " >>  ";
+
+	cin >> userChoice;
+	userChoice = toupper(userChoice);
+	cin.ignore();
+	switch (userChoice) {
+	case ('Q'):
+		grid[this->row][this->col] = new Queen(this->color);
+		break;
+	case ('R'):
+		grid[this->row][this->col] = new Rook(this->color);
+		break;
+	case ('B'):
+		grid[this->row][this->col] = new Bishop(this->color);
+		break;
+	case ('N'):
+		grid[this->row][this->col] = new Knight(this->color);
+		break;
+	default:
+		cout << endl << endl << endl;
+		getPawnPromotion(grid);
+		break;
+	}
+}
+
+// 
 bool Pawn::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return false;
 }
 
 // need to finish writing moveResult;
+
+//Pawn Promotion:
+// - if pawn
