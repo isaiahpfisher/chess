@@ -12,7 +12,7 @@ string Bishop::isValidMove(Piece* grid[8][8], int startRow, int startCol, int en
 	int colDiff = abs(startCol - endCol);
 
 	if (rowDiff != colDiff) {
-		checkResult = "Can only move diaganally. Try Again.";
+		checkResult = "Bishops can only move diagonally. Try Again.";
 	}
 
 	return checkResult;
