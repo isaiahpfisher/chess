@@ -48,7 +48,7 @@ bool Piece::isPieceInWay(Piece* grid[8][8], int startRow, int startCol, int endR
 	// loop through grid and check every piece between start and end
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			if (((row > minRow && row < maxRow) || (minRow == maxRow)) && ((col > minCol && col < maxCol) || (minCol == maxCol))) {
+			if ((((row > minRow && row < maxRow) || (minRow == maxRow)) && ((col > minCol && col < maxCol) || (minCol == maxCol))) && (abs(row - startRow) == abs(col - startCol))) {
 				if (!grid[row][col]->isEmpty()) {
 					checkResult = true;
 				}
