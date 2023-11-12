@@ -4,6 +4,7 @@
 Queen::Queen(string color) {
 	this->color = color;
 	this->type = QUEEN;
+	this->unicode = u8"\u265B";
 }
 
 string Queen::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {

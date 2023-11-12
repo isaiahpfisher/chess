@@ -9,6 +9,10 @@
 #include "Knight.h"
 #include "Empty.h"
 
+void Board::test(string test) {
+	cout << dye::red(test);
+}
+
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
 
@@ -131,9 +135,9 @@ void Board::printLine(int row) {
 				if ((row + col) % 2 == 0) {
 					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 						if (getPieceAtPosition(row, col)->color == WHITE) {
-							cout << dye::red_on_white(getPieceAtPosition(row, col)->type);
+							cout << dye::red_on_white(getPieceAtPosition(row, col)->unicode);
 						} else {
-							cout << dye::purple_on_white(getPieceAtPosition(row, col)->type);
+							cout << dye::purple_on_white(getPieceAtPosition(row, col)->unicode);
 						}
 					} else {
 						cout << dye::on_white(" ");
@@ -142,9 +146,9 @@ void Board::printLine(int row) {
 				else {
 					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 						if (getPieceAtPosition(row, col)->color == WHITE) {
-							cout << dye::red_on_black(getPieceAtPosition(row, col)->type);
+							cout << dye::red_on_black(getPieceAtPosition(row, col)->unicode);
 						} else {
-							cout << dye::purple_on_black(getPieceAtPosition(row, col)->type);
+							cout << dye::purple_on_black(getPieceAtPosition(row, col)->unicode);
 						}
 					} else {
 						cout << dye::on_black(" ");

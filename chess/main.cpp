@@ -2,8 +2,9 @@
 #include "Board.h"
 #include "Empty.h"
 
-
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
+ 
 
     bool playAgain = true;
 

@@ -9,6 +9,7 @@
 Pawn::Pawn(string color) {
 	this->color = color;
 	this->type = PAWN;
+	this->unicode = u8"\u265F";
 }
 
 // checks if move is a valid move for a pawn

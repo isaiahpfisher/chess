@@ -4,6 +4,7 @@
 Knight::Knight(string color) {
 	this->color = color;
 	this->type = KNIGHT;
+	this->unicode = u8"\u265E";
 }
 
 string Knight::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {

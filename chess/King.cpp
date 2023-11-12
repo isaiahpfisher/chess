@@ -6,6 +6,7 @@
 King::King(string color, int row, int col) {
 	this->color = color;
 	this->type = KING;
+	this->unicode = u8"\u265A";
 	this->row = row;
 	this->col = col;
 }

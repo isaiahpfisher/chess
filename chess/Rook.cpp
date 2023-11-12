@@ -4,6 +4,7 @@
 Rook::Rook(string color) {
 	this->color = color;
 	this->type = ROOK;
+	this->unicode = u8"\u265C";
 }
 
 string Rook::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
