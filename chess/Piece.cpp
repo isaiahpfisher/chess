@@ -23,18 +23,6 @@ bool Piece::isEmpty() {
 	return this->type == EMPTY;
 }
 
-// translate x,y coordinates to a string for moveHistory
-string Piece::translateMoves(int row, int col) {
-	string strCol(1, col + 'A');
-	string strRow(1, 8 - row + '0');
-	return strCol + strRow;
-
-	/*startCol = toupper(input[0]) - 'A';
-	startRow = 8 - (input[1] - '0');
-	endCol = toupper(input[3]) - 'A';
-	endRow = 8 - (input[4] - '0');*/
-}
-
 
 bool Piece::isPieceInWay(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 
