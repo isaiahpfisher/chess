@@ -460,7 +460,6 @@ bool Board::gameEndMenu() {
 
 	if (userChoice == 'Y') {
 		playAgain = true;
-		/*Board game = Board();*/
 	}
 	else {
 		playAgain = false;
