@@ -102,10 +102,15 @@ void Board::print() {
 	
 	system("cls");
 
-	cout << endl << endl;
+	cout << endl;
+
+	cout << setw(54) << "" << "      Taken Pieces" << endl;
+
+	vector<MoveHistory> whiteTaken = this->getTakenPieces(WHITE);
+	vector<MoveHistory> blackTaken = this->getTakenPieces(BLACK);
 
 	for (int row = 0; row < 8; row++) {
-		printLine(row);
+		printLine(row, whiteTaken, blackTaken);
 	}
 
 	cout << endl;
@@ -116,8 +121,19 @@ void Board::print() {
 	cout << endl << endl;
 }
 
+// gets all taken pieces of given color
+vector<MoveHistory> Board::getTakenPieces(string color) {
+	vector<MoveHistory> takenPieces;
+	for (int i = 0; i < this->moveHistory.size(); i++) {
+		if (this->moveHistory[i].endColor == color) {
+			takenPieces.push_back(this->moveHistory[i]);
+		}
+	}
+	return takenPieces;
+}
+
 // prints a single row of the board
-void Board::printLine(int row) {
+void Board::printLine(int row, vector<MoveHistory> whiteTaken, vector<MoveHistory> blackTaken) {
 	for (int subRow = 0; subRow < CELL_SIZE / 2; subRow++) {
 
 		if (subRow == (CELL_SIZE / 4)) {
@@ -152,6 +168,22 @@ void Board::printLine(int row) {
 				}
 			}
 		}
+
+		cout << "         ";
+		if (whiteTaken.size() > (row * CELL_SIZE / 2) + subRow) {
+			cout << dye::light_red_on_black(whiteTaken[(row * CELL_SIZE / 2) + subRow].endUnicode);
+		}
+		else {
+			cout << " ";
+		}
+		cout << "    ";
+		if (blackTaken.size() > (row * CELL_SIZE / 2) + subRow) {
+			cout << dye::light_purple_on_black(blackTaken[(row * CELL_SIZE / 2) + subRow].endUnicode);
+		}
+		else {
+			cout << " ";
+		}
+
 		cout << endl;
 	}
 }

@@ -14,9 +14,10 @@ public:
 	int turnSinceLastTake = 0;
 	vector<string> history = { "base" };
 	vector<MoveHistory> moveHistory;
+	vector<MoveHistory> getTakenPieces(string color);
 	Piece* getPieceAtPosition(int row, int col); // returns the Piece the given row x col
 	void print(); // prints the current board
-	void printLine(int row); // helper function for print()
+	void printLine(int row, vector<MoveHistory> whiteTaken, vector<MoveHistory> blackTaken); // helper function for print()
 	void move(int startRow, int startCol, int endRow, int endCol);
 	void getInput();
 	string checkMove(string input, int startRow, int startCol, int endRow, int endCol);
