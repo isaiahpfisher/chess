@@ -30,5 +30,7 @@ public:
 	bool isThirdRepetition();
 	bool isInsufficientMaterial();
 	bool gameEndMenu();
+	void titleScreen();
+	bool isAI = false;
 };
 

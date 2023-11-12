@@ -3,14 +3,16 @@
 #include "Empty.h"
 
 int main() {
+    
     SetConsoleOutputCP(CP_UTF8);
- 
 
     bool playAgain = true;
 
     // 
     while (playAgain) {
         Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
+
+        game.titleScreen();
 
         // 
         while (!game.isOver()) {
