@@ -104,8 +104,8 @@ void Board::print() {
 
 	cout << endl;
 
-	cout << setw(54) << "" << "      Taken Pieces" << endl;
-
+	cout << setw(54) << "" << "      Taken Pieces" << setw(5) << "" << "Move History" << endl;
+	
 	vector<MoveHistory> whiteTaken = this->getTakenPieces(WHITE);
 	vector<MoveHistory> blackTaken = this->getTakenPieces(BLACK);
 
@@ -130,6 +130,30 @@ vector<MoveHistory> Board::getTakenPieces(string color) {
 		}
 	}
 	return takenPieces;
+}
+
+// translate x,y coordinates to a string for moveHistory
+string Board::translateCoordinates(int row, int col) {
+	string strCol(1, col + 'A');
+	string strRow(1, 8 - row + '0');
+	return strCol + strRow;
+}
+
+void Board::translateMoveHistory(MoveHistory move) {
+	string start = translateCoordinates(move.startRow, move.startCol);
+	string end = translateCoordinates(move.endRow, move.endCol);
+	string startPiece = "(" + move.startUnicode + ")";
+	string endPiece = (move.endType != EMPTY) ? "(" + move.endUnicode + ")" : "  ";
+	(move.startColor == WHITE) ? cout << dye::light_red_on_black(startPiece) : cout << dye::light_purple_on_black(startPiece);
+	cout << " " << start << " to " << end << " ";
+	(move.endColor == WHITE) ? cout << dye::light_red_on_black(endPiece) : cout << dye::light_purple_on_black(endPiece);
+
+	if (move.enPassant) {
+		cout << " (En Passant)";
+	}
+	else if (move.castled) {
+		cout << "  (Castled)";
+	}
 }
 
 // prints a single row of the board
@@ -183,6 +207,17 @@ void Board::printLine(int row, vector<MoveHistory> whiteTaken, vector<MoveHistor
 		else {
 			cout << " ";
 		}
+		cout << setw(8) << "";
+		if (this->moveHistory.size() > 0) {
+			if (this->moveHistory.size() >= 24) {
+				cout << setw(2) << left << (this->turnCount - 24 + (row * CELL_SIZE / 2) + subRow) << " ";
+				this->translateMoveHistory(this->moveHistory[(this->turnCount - 24 + (row * CELL_SIZE / 2) + subRow) - 1]);
+			}
+			else if ((row * CELL_SIZE / 2) + subRow < this->moveHistory.size()) {
+				cout << setw(2) << left << (this->turnCount - this->moveHistory.size() + (row * CELL_SIZE / 2) + subRow) << " ";
+				this->translateMoveHistory(this->moveHistory[(this->turnCount - this->moveHistory.size() + (row * CELL_SIZE / 2) + subRow) - 1]);
+			}
+		}
 
 		cout << endl;
 	}
@@ -220,6 +255,17 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	string note = startPiece->move(this->grid, startRow, startCol, endRow, endCol);
 	currentMove.enPassant = (note == "En Passant");
 	currentMove.castled = (note == "Castled");
+
+
+	//endPiece->type, endPiece->color, endPiece->unicode};
+
+	if (currentMove.enPassant) {
+		currentMove.endType = PAWN;
+		currentMove.endUnicode = u8"\u265F";
+		currentMove.endColor = (startPiece->color == WHITE ? BLACK : WHITE);
+	}
+
+	//this->moveHistory.insert(this->moveHistory.begin(), currentMove);
 	this->moveHistory.push_back(currentMove);
 	
 	// reset enPassant of previous piece
@@ -487,6 +533,9 @@ bool Board::gameEndMenu() {
 	}
 	else if (this->turnSinceLastTake >= 50) {
 		cout << "50 Moves without takeing a piece." << endl;
+	}
+	else if (this->isInsufficientMaterial()) {
+		cout << "Insufficient Materials." << endl;
 	}
 
 	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
