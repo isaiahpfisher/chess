@@ -9,10 +9,6 @@
 #include "Knight.h"
 #include "Empty.h"
 
-void Board::test(string test) {
-	cout << dye::red(test);
-}
-
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
 
@@ -135,9 +131,9 @@ void Board::printLine(int row) {
 				if ((row + col) % 2 == 0) {
 					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 						if (getPieceAtPosition(row, col)->color == WHITE) {
-							cout << dye::red_on_white(getPieceAtPosition(row, col)->unicode);
+							cout << dye::light_red_on_white(getPieceAtPosition(row, col)->unicode);
 						} else {
-							cout << dye::purple_on_white(getPieceAtPosition(row, col)->unicode);
+							cout << dye::light_purple_on_white(getPieceAtPosition(row, col)->unicode);
 						}
 					} else {
 						cout << dye::on_white(" ");
@@ -146,9 +142,9 @@ void Board::printLine(int row) {
 				else {
 					if (!(*getPieceAtPosition(row, col)).isEmpty() && (subRow == (CELL_SIZE / 4) && subCol == CELL_SIZE / 2 - 1)) {
 						if (getPieceAtPosition(row, col)->color == WHITE) {
-							cout << dye::red_on_black(getPieceAtPosition(row, col)->unicode);
+							cout << dye::light_red_on_black(getPieceAtPosition(row, col)->unicode);
 						} else {
-							cout << dye::purple_on_black(getPieceAtPosition(row, col)->unicode);
+							cout << dye::light_purple_on_black(getPieceAtPosition(row, col)->unicode);
 						}
 					} else {
 						cout << dye::on_black(" ");
@@ -203,7 +199,7 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 void Board::getInput() {
 	string input;
 	int startRow, startCol, endRow, endCol;
-	cout << " >> " << (this->getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK))
+	cout << " >> " << (this->getCurrentTurn() == WHITE ? dye::light_red(WHITE) : dye::light_purple(BLACK))
 		<< ": What's your next move? (ex. A3 B5  or  a3 b5)" << endl << " >> ";
 	getline(cin, input);
 
@@ -286,7 +282,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 
 // Prints the error message is wrong move or does the move is valid
 void Board::printErrorMessage(string error) {
-	cout << " >> " << dye::white_on_red(" " + error + " ") << endl;
+	cout << " >> " << dye::white_on_light_red(" " + error + " ") << endl;
 }
 
 // returns the color of whatever team's turn it is
@@ -437,10 +433,10 @@ bool Board::gameEndMenu() {
 	this->print();
 	cout << " >> Game over ";
 	if (!(this->isStalemate() || this->isThirdRepetition() || this->isInsufficientMaterial() || this->turnSinceLastTake >= 50)) {
-		cout << (this->getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK));
+		cout << (this->getCurrentTurn() == WHITE ? dye::light_red(WHITE) : dye::light_purple(BLACK));
 	}
 	else {
-		cout << dye::red("Both");
+		cout << dye::light_red("Both");
 	}
 	cout << " lost by: ";
 	if (this->isCheckmate()) {
@@ -471,4 +467,33 @@ bool Board::gameEndMenu() {
 	}
 
 	return playAgain;
+}
+
+// 
+void Board::titleScreen() {
+	char userChoice;
+	cout << endl << endl << endl;
+	cout << " >> Welcome to Chess." << endl;
+	cout << " >> This was made by:" << endl;
+	cout << " >> " << dye::light_green("Isaiah and Jaxen.") << endl << endl;
+
+	cout << " >> If you would like to play against an AI type " << dye::light_green("Y") << ", or if you would like to play with a friend type " << dye::light_red("N") << "." << endl;
+	cout << " >> ";
+	cin >> userChoice;
+	userChoice = toupper(userChoice);
+	cin.ignore();
+
+	switch (userChoice) {
+	case ('Y'):
+		this->isAI = true;
+		break;
+	case ('N'):
+		this->isAI = false;
+		break;
+	default:
+		system("cls");
+		cout << "You did not type an Y or an N. Try Again." << endl;
+		this->titleScreen();
+		break;
+	}
 }
