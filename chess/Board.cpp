@@ -236,7 +236,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	string checkResult; // What the error message will say, blank if valid
 
 	// Checks if the move is on the board
-	if (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7) {
+	if (input != "-1" && (startCol < 0 || startCol > 7 || startRow < 0 || startRow > 7 || endCol < 0 || endCol > 7 || endRow < 0 || endRow > 7)) {
 		checkResult = "Invalid Move (" + input + "). Try Again.";
 	}
 
