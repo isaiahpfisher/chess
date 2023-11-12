@@ -458,13 +458,13 @@ bool Board::gameEndMenu() {
 
 	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
 
+	cout << " >> ";
 	cin >> userChoice;
 	userChoice = toupper(userChoice);
 	cin.ignore();
 
 	if (userChoice == 'Y') {
 		playAgain = true;
-		/*Board game = Board();*/
 	}
 	else {
 		playAgain = false;
