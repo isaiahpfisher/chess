@@ -62,6 +62,41 @@ Board::Board() {
 	this->grid[6][7] = new Pawn(WHITE);
 }
 
+// non-default for testing
+Board::Board(bool ignore) {
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			this->grid[row][col] = new Empty();
+		}
+	}
+
+	// position kings!
+	this->grid[1][5] = new King(BLACK, 1, 5);
+	this->blackKing = this->grid[1][5];
+
+	this->grid[7][6] = new King(WHITE, 7, 6);
+	this->whiteKing = this->grid[7][6];
+
+	this->grid[5][3] = new Queen(WHITE);
+	this->grid[0][2] = new Queen(BLACK);
+	this->grid[0][0] = new Rook(BLACK);
+	this->grid[7][5] = new Rook(WHITE);
+	this->grid[5][6] = new Rook(WHITE);
+
+	this->grid[6][5] = new Pawn(WHITE);
+	this->grid[6][6] = new Pawn(WHITE);
+	this->grid[6][7] = new Pawn(WHITE);
+	this->grid[3][0] = new Pawn(BLACK);
+	this->grid[1][2] = new Pawn(BLACK);
+	this->grid[3][4] = new Pawn(BLACK);
+	this->grid[2][6] = new Pawn(BLACK);
+	this->grid[3][7] = new Pawn(BLACK);
+
+
+
+
+}
+
 // prints the board
 void Board::print() {
 	
@@ -130,13 +165,25 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
 
+	int direction = (startPiece->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
+
+	if (!grid[endRow][endCol]->isEmpty() || (((endRow - direction >= 0) && (endRow - direction <= 7)) && (grid[endRow - direction][endCol]->enPassant))) {
+		this->turnSinceLastTake = 0;
+		this->history.clear();
+		this->history.push_back("base");
+	}
+	else {
+		this->turnSinceLastTake++;
+	}
+
 	// make the move
-	delete grid[endRow][endCol];
 	grid[endRow][endCol] = grid[startRow][startCol];
 	grid[startRow][startCol] = new Empty();
 
 	// do move-specific code and push move to move history
-	this->moveHistory.push_back(startPiece->move(this->grid, startRow, startCol, endRow, endCol));
+	startPiece->move(this->grid, startRow, startCol, endRow, endCol);
+	MoveHistory currentMove = { startPiece->color, startPiece->type, startRow, startCol, endRow, endCol };
+	this->moveHistory.push_back(currentMove);
 	
 	// reset enPassant of previous piece
 	lastPieceMoved->enPassant = false;
@@ -144,8 +191,8 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	// set lastPieceMoved to current piece
 	lastPieceMoved = this->grid[endRow][endCol];
 
-
-	// Check if checkmate
+	// when the move is over, save a snapshot of the board to history
+	this->history.push_back(this->boardToString());
 }
 
 // Gets the input for moves
@@ -243,13 +290,33 @@ string Board::getCurrentTurn() {
 	return (turnCount % 2 == WHITE_TURN ? WHITE : BLACK);
 }
 
-bool Board::isCheckmate() {
+// 
+bool Board::isOver() {
+
+	// check for checkmate
+	if (this->isCheckmate()) { return true; }
+
+	// 50+ moves since a piece was taken
+	if (this->turnSinceLastTake >= 50) { return true; }
+
+	// check for stalemate
+	if (this->isStalemate()) { return true; }
+
+	// check for three-repeated moves
+	if (this->isThirdRepetition()) { return true; }
+
+	// check for insufficient material
+	if (this->isInsufficientMaterial()) { return true; }
+
+
+
+	return false;
+}
+
+
+bool Board::isMate() {
 	string currentColor = this->getCurrentTurn();
-	Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
-
-	// return false if king isn't in check at start of turn
-	if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
-
+	Piece* currentKing = (currentColor == WHITE ? whiteKing : blackKing);
 
 	// check for any possible moves that won't make the king in check
 	for (int row = 0; row < 8; row++) {
@@ -258,7 +325,7 @@ bool Board::isCheckmate() {
 			if (!piece->isEmpty() && piece->color == currentColor) {
 				for (int subRow = 0; subRow < 8; subRow++) {
 					for (int subCol = 0; subCol < 8; subCol++) {
-						if (!currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+						if ((this->checkMove("-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							return false; // return false at first sign of a move that wouldn't put the king in check
 						}
 					}
@@ -267,4 +334,91 @@ bool Board::isCheckmate() {
 		}
 	}
 	return true;
+}
+
+// 
+bool Board::isStalemate() {
+	Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+
+	// return false if king is in check at start of turn
+	if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
+
+	// 
+	return isMate();
+}
+
+// 
+bool Board::isCheckmate() {
+	Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+
+	// return false if king isn't in check at start of turn
+	if (!currentKing->isInCheck(this->grid, -1, -1, -1, -1)) { return false; }
+
+	// 
+	return isMate();
+}
+
+bool Board::isThirdRepetition() {
+	string board = this->history[this->history.size() - 1];
+	int matchCount = 0;
+	for (int i = 0; i < this->history.size(); i++) {
+		if (this->history[i] == board) { matchCount++; }
+	}
+	return (matchCount >= 3);
+}
+
+string Board::boardToString() {
+	string board;
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			string symbol = this->grid[row][col]->color.substr(0, 1) + this->grid[row][col]->type;
+			board += symbol;
+		}
+	}
+	return board;
+}
+
+bool Board::isInsufficientMaterial() {
+	int knights = 0;
+	int whiteBishopsOnWhite = 0;
+	int whiteBishopsOnBlack = 0;
+	int blackBishopsOnWhite = 0;
+	int blackBishopsOnBlack = 0;
+
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->grid[row][col];
+
+			if (piece->type == QUEEN || piece->type == ROOK || piece->type == PAWN) { return false; }
+			if (piece->type == KNIGHT) { knights++; }
+			if (piece->type == BISHOP) {
+				if ((row + col) % 2 == 0) {
+					{ piece->color == WHITE ? whiteBishopsOnWhite++ : blackBishopsOnWhite++; }
+				}
+				else {
+					{ piece->color == WHITE ? whiteBishopsOnBlack++ : blackBishopsOnBlack++; }
+				}
+			}
+		}
+	}
+
+	// just two kings
+	if ((knights + whiteBishopsOnWhite + whiteBishopsOnBlack + blackBishopsOnWhite + blackBishopsOnBlack) == 0) { return true; }
+
+	// one king and bishop versus one king
+	if ((knights == 0)
+		&& (((whiteBishopsOnWhite + whiteBishopsOnBlack == 1) && (blackBishopsOnWhite + blackBishopsOnBlack == 0))
+			|| (((whiteBishopsOnWhite + whiteBishopsOnBlack == 0) && (blackBishopsOnWhite + blackBishopsOnBlack == 1))))) { return true; }
+
+	// one king and knight versus one king
+	if ((whiteBishopsOnWhite + whiteBishopsOnBlack + blackBishopsOnWhite + blackBishopsOnBlack == 0) && (knights == 1)) { return true; }
+
+	// one king and bishop vs one king and bishop (bishops on same color)
+	if ((knights == 0)
+		&& (((whiteBishopsOnBlack + blackBishopsOnBlack == 0) && (whiteBishopsOnWhite + blackBishopsOnWhite == 2))
+			|| ((whiteBishopsOnBlack + blackBishopsOnBlack == 2) && (whiteBishopsOnWhite + blackBishopsOnWhite == 0)))) { return true; }
+	
+
+	return false;
 }

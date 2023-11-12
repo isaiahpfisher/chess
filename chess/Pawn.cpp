@@ -21,7 +21,7 @@ string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 		checkResult = "You SiCkO!!!!! Why are you trying to move that way. Try Again.";
 	}
 	// tried to go backwards
-	else if ((endRow * direction < startRow * direction) && (startCol == endCol)) {
+	else if ((endRow * direction < startRow * direction)) {
 		checkResult = "Pawns can't move backwards. Try Again.";
 	}
 	// tried to move sideways

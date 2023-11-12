@@ -20,11 +20,19 @@ const char PAWN = 'P';
 const char EMPTY = 'E';
 const string WHITE = "RED";
 const string BLACK = "PURPLE";
+const string EMPTY_COLOR = "EMPTY";
 const int WHITE_TURN = 1;
 const int BLACK_TURN = 0;
 const int WHITE_DIRECTION = -1;
 const int BLACK_DIRECTION = 1;
-const int CELL_SIZE = 6; // game looks best at this size
+const int CELL_SIZE = 6;
+
+// Structs Definitions
+struct MoveHistory {
+	string color;
+	char type;
+	int startRow, startCol, endRow, endCol;
+};
 
 // Function Declarations
 

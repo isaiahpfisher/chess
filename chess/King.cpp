@@ -31,7 +31,7 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 		checkResult = "Kings can only move linearly. Try Again.";
 	}
 	// castling
-	else if (colDiff == 2) {
+	else if (colDiff == 2 && rowDiff == 0) {
 		// if either piece has already moved
 		if (this->hasMoved || (rookSpot->type == ROOK && rookSpot->hasMoved)) {
 			checkResult = "Can't castle if king or rook has already moved. Try Again.";
