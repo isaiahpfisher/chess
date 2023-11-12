@@ -5,7 +5,7 @@ class Piece {
 public:
 	char type;
 	string color; // color (WHITE, BLACK)
-	string unicode;
+	string unicode = "";
 	bool enPassant = false; // 
 	bool hasMoved = false; // 
 	int row; // 

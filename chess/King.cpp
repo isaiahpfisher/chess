@@ -61,6 +61,8 @@ string King::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 // 
 string King::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 
+	string moveResult;
+
 	int rowDiff = abs(startRow - endRow);
 	int colDiff = abs(startCol - endCol);
 
@@ -77,13 +79,14 @@ string King::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int
 		delete grid[rookRowDest][rookColDest];
 		grid[rookRowDest][rookColDest] = grid[rookRow][rookCol];
 		grid[rookRow][rookCol] = new Empty();
+		moveResult = "Castled";
 	}
 
 	this->row = endRow;
 	this->col = endCol;
 	this->hasMoved = true;
 
-	return "";
+	return moveResult;
 }
 
 // 

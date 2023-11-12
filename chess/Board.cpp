@@ -9,10 +9,6 @@
 #include "Knight.h"
 #include "Empty.h"
 
-void Board::test(string test) {
-	cout << dye::red(test);
-}
-
 // initializes the grid of the board to have the starting positions of a chess game
 Board::Board() {
 
@@ -168,6 +164,9 @@ Piece* Board::getPieceAtPosition(int row, int col) {
 // moves a piece on the board
 void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
+	Piece* endPiece = this->getPieceAtPosition(endRow, endCol);
+
+	MoveHistory currentMove = { startRow, startCol, endRow, endCol, startPiece->type, startPiece->color, startPiece->unicode, endPiece->type, endPiece->color, endPiece->unicode};
 
 	int direction = (startPiece->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
 
@@ -181,12 +180,14 @@ void Board::move(int startRow, int startCol, int endRow, int endCol) {
 	}
 
 	// make the move
+	delete grid[endRow][endCol]; // THIS COULD BE THE SOURCE OF A BUG
 	grid[endRow][endCol] = grid[startRow][startCol];
 	grid[startRow][startCol] = new Empty();
 
 	// do move-specific code and push move to move history
-	startPiece->move(this->grid, startRow, startCol, endRow, endCol);
-	MoveHistory currentMove = { startPiece->color, startPiece->type, startRow, startCol, endRow, endCol };
+	string note = startPiece->move(this->grid, startRow, startCol, endRow, endCol);
+	currentMove.enPassant = (note == "En Passant");
+	currentMove.castled = (note == "Castled");
 	this->moveHistory.push_back(currentMove);
 	
 	// reset enPassant of previous piece

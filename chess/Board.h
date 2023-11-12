@@ -30,6 +30,5 @@ public:
 	bool isThirdRepetition();
 	bool isInsufficientMaterial();
 	bool gameEndMenu();
-	void test(string test);
 };
 

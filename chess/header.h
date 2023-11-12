@@ -30,9 +30,13 @@ const int CELL_SIZE = 6;
 
 // Structs Definitions
 struct MoveHistory {
-	string color;
-	char type;
 	int startRow, startCol, endRow, endCol;
+	char startType;
+	string startColor, startUnicode;
+	char endType;
+	string endColor, endUnicode;
+	bool enPassant;
+	bool castled;
 };
 
 // Function Declarations

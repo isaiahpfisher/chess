@@ -49,12 +49,14 @@ string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 // performs pawn-specific actions after a move
 string Pawn::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 
-	string moveResult = translateMoves(startRow, startCol) + " to " + translateMoves(endRow, endCol);
+	string moveResult;
 	int direction = (this->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
 
 	// if en passant happened, remove the enemy piece
 	if (grid[endRow - direction][endCol]->enPassant) {
+		delete grid[endRow - direction][endCol]; // THIS COULD BE THE SOURCE OF A BUG
 		grid[endRow - direction][endCol] = new Empty();
+		moveResult = "En Passant";
 	}
 
 	// if pawn moved two spaces (which is only possible on first turn), make it vulnerable to en passant attack
