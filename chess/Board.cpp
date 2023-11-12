@@ -498,6 +498,7 @@ bool Board::gameEndMenu() {
 
 	if (userChoice == 'Y') {
 		playAgain = true;
+		system("cls");
 	}
 	else {
 		playAgain = false;
