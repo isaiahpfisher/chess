@@ -29,5 +29,6 @@ public:
 	string boardToString();
 	bool isThirdRepetition();
 	bool isInsufficientMaterial();
+	bool gameEndMenu();
 };
 

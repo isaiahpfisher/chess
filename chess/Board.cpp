@@ -313,7 +313,7 @@ bool Board::isOver() {
 	return false;
 }
 
-
+// 
 bool Board::isMate() {
 	string currentColor = this->getCurrentTurn();
 	Piece* currentKing = (currentColor == WHITE ? whiteKing : blackKing);
@@ -358,6 +358,7 @@ bool Board::isCheckmate() {
 	return isMate();
 }
 
+// 
 bool Board::isThirdRepetition() {
 	string board = this->history[this->history.size() - 1];
 	int matchCount = 0;
@@ -367,6 +368,7 @@ bool Board::isThirdRepetition() {
 	return (matchCount >= 3);
 }
 
+// 
 string Board::boardToString() {
 	string board;
 	for (int row = 0; row < 8; row++) {
@@ -378,6 +380,7 @@ string Board::boardToString() {
 	return board;
 }
 
+// 
 bool Board::isInsufficientMaterial() {
 	int knights = 0;
 	int whiteBishopsOnWhite = 0;
@@ -421,4 +424,47 @@ bool Board::isInsufficientMaterial() {
 	
 
 	return false;
+}
+
+// 
+bool Board::gameEndMenu() {
+	char userChoice;
+	bool playAgain;
+	this->print();
+	cout << " >> Game over ";
+	if (!(this->isStalemate() || this->isThirdRepetition() || this->isInsufficientMaterial() || this->turnSinceLastTake >= 50)) {
+		cout << (this->getCurrentTurn() == WHITE ? dye::red(WHITE) : dye::purple(BLACK));
+	}
+	else {
+		cout << dye::red("Both");
+	}
+	cout << " lost by: ";
+	if (this->isCheckmate()) {
+		cout << "Checkmate." << endl;
+	}
+	else if (this->isStalemate()) {
+		cout << "Stalemate." << endl;
+	}
+	else if (this->isThirdRepetition()) {
+		cout << "Third Repitition" << endl;
+	}
+	else if (this->turnSinceLastTake >= 50) {
+		cout << "50 Moves without takeing a piece." << endl;
+	}
+
+	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
+
+	cin >> userChoice;
+	userChoice = toupper(userChoice);
+	cin.ignore();
+
+	if (userChoice == 'Y') {
+		playAgain = true;
+		/*Board game = Board();*/
+	}
+	else {
+		playAgain = false;
+	}
+
+	return playAgain;
 }
