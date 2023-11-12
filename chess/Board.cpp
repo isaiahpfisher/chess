@@ -454,6 +454,7 @@ bool Board::gameEndMenu() {
 
 	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
 
+	cout << " >> ";
 	cin >> userChoice;
 	userChoice = toupper(userChoice);
 	cin.ignore();
