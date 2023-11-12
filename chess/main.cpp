@@ -5,7 +5,7 @@
 
 int main() {
 
-    Board game(true); // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
+    Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
 
     // 
     while (!game.isOver()) {
