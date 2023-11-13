@@ -602,7 +602,7 @@ void Board::titleScreen() {
 }
 
 //
-void Board::doComputerMove(int levels) {
+void Board::doComputerMove() {
 	string color = getCurrentTurn();
 	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
 
@@ -618,7 +618,7 @@ void Board::doComputerMove(int levels) {
 						if ((this->checkMove(color, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							Board simulation(this);
 							simulation.move(row, col, subRow, subCol);
-							double position = simulation.evaluateBoard(color);
+							double position = simulation.evaluateBoard(BLACK);
 							if (position > maxPosition) {
 								maxPosition = position;
 								startRow = row;
