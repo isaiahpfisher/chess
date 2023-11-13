@@ -24,14 +24,14 @@ Board::Board() {
 	this->grid[0][7] = new Rook(BLACK);
 
 	// Black Second Row
-	this->grid[1][0] = new Pawn(BLACK);
-	this->grid[1][1] = new Pawn(BLACK);
-	this->grid[1][2] = new Pawn(BLACK);
-	this->grid[1][3] = new Pawn(BLACK);
-	this->grid[1][4] = new Pawn(BLACK);
-	this->grid[1][5] = new Pawn(BLACK);
-	this->grid[1][6] = new Pawn(BLACK);
-	this->grid[1][7] = new Pawn(BLACK);
+	this->grid[1][0] = new Pawn(BLACK, this->isAI);
+	this->grid[1][1] = new Pawn(BLACK, this->isAI);
+	this->grid[1][2] = new Pawn(BLACK, this->isAI);
+	this->grid[1][3] = new Pawn(BLACK, this->isAI);
+	this->grid[1][4] = new Pawn(BLACK, this->isAI);
+	this->grid[1][5] = new Pawn(BLACK, this->isAI);
+	this->grid[1][6] = new Pawn(BLACK, this->isAI);
+	this->grid[1][7] = new Pawn(BLACK, this->isAI);
 
 	// Empty Spaces
 	for (int row = 2; row < 6; row++) {
@@ -52,37 +52,67 @@ Board::Board() {
 	this->grid[7][7] = new Rook(WHITE);
 
 	// White Second Row
-	this->grid[6][0] = new Pawn(WHITE);
-	this->grid[6][1] = new Pawn(WHITE);
-	this->grid[6][2] = new Pawn(WHITE);
-	this->grid[6][3] = new Pawn(WHITE);
-	this->grid[6][4] = new Pawn(WHITE);
-	this->grid[6][5] = new Pawn(WHITE);
-	this->grid[6][6] = new Pawn(WHITE);
-	this->grid[6][7] = new Pawn(WHITE);
+	this->grid[6][0] = new Pawn(WHITE, false);
+	this->grid[6][1] = new Pawn(WHITE, false);
+	this->grid[6][2] = new Pawn(WHITE, false);
+	this->grid[6][3] = new Pawn(WHITE, false);
+	this->grid[6][4] = new Pawn(WHITE, false);
+	this->grid[6][5] = new Pawn(WHITE, false);
+	this->grid[6][6] = new Pawn(WHITE, false);
+	this->grid[6][7] = new Pawn(WHITE, false);
 }
 
-// non-default for testing
-Board::Board(bool ignore) {
+// copy constructor for board
+Board::Board(Board* game) {
+	this->turnCount = game->turnCount;
+
+	this->turnSinceLastTake = game->turnSinceLastTake;
+	this->history = game->history;
+	this->moveHistory = game->moveHistory;
+	this->isAI = game->isAI;
+
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			this->grid[row][col] = new Empty();
+			Piece* piece = game->grid[row][col];
+			string currentColor = piece->color;
+
+			switch (piece->type) {
+			case KING:
+				this->grid[row][col] = new King(currentColor, row, col);
+				(currentColor == WHITE ? this->whiteKing = this->grid[row][col] : this->blackKing = this->grid[row][col]);
+				break;
+			case QUEEN:
+				this->grid[row][col] = new Queen(currentColor);
+				break;
+			case ROOK:
+				this->grid[row][col] = new Rook(currentColor);
+				break;
+			case BISHOP:
+				this->grid[row][col] = new Bishop(currentColor);
+				break;
+			case KNIGHT:
+				this->grid[row][col] = new Knight(currentColor);
+				break;
+			case PAWN:
+				this->grid[row][col] = new Pawn(currentColor, game->grid[row][col]->isAI);
+				break;
+			default:
+				this->grid[row][col] = new Empty();
+			}
+
+			this->grid[row][col]->type = game->grid[row][col]->type;
+			this->grid[row][col]->color = game->grid[row][col]->color;
+			this->grid[row][col]->unicode = game->grid[row][col]->unicode;
+			this->grid[row][col]->enPassant = game->grid[row][col]->enPassant;
+			this->grid[row][col]->hasMoved = game->grid[row][col]->hasMoved;
+			this->grid[row][col]->row = game->grid[row][col]->row;
+			this->grid[row][col]->col = game->grid[row][col]->col;
+
+			if (row == game->lastPieceMoved->row && col == game->lastPieceMoved->col) {
+				this->lastPieceMoved = this->grid[row][col];
+			}
 		}
 	}
-
-	// position kings!
-	this->grid[1][5] = new King(BLACK, 1, 5);
-	this->blackKing = this->grid[1][5];
-
-	this->grid[7][6] = new King(WHITE, 7, 6);
-	this->whiteKing = this->grid[7][6];
-
-	this->grid[4][0] = new Pawn(WHITE);
-	this->grid[3][0] = new Pawn(BLACK);
-	this->grid[3][1] = new Pawn(BLACK);
-
-
-
 }
 
 // prints the board
@@ -287,7 +317,7 @@ void Board::getInput() {
 	endCol = toupper(input[3]) - 'A';
 	endRow = 8 - (input[4] - '0');
 	
-	string checkResult = checkMove(input, startRow, startCol, endRow, endCol);
+	string checkResult = checkMove(this->getCurrentTurn(), input, startRow, startCol, endRow, endCol);
 	if (checkResult == "") {
 		move(startRow, startCol, endRow, endCol);
 	}
@@ -299,7 +329,7 @@ void Board::getInput() {
 }
 
 // Checks if moves are valid
-string Board::checkMove(string input, int startRow, int startCol, int endRow, int endCol){
+string Board::checkMove(string currentTurn, string input, int startRow, int startCol, int endRow, int endCol){
 	
 	// get pieces/spaces
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
@@ -317,8 +347,8 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 
 	// Check if startPiece is from the right team
-	else if (this->getCurrentTurn() != startPiece->color) {
-		checkResult = "It's " + (this->getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
+	else if (currentTurn != startPiece->color) {
+		checkResult = "It's " + (currentTurn == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
 	}
 
 	// Checks if move is on top of same team
@@ -335,7 +365,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 	// checking for check
 	if (checkResult == "") {
-		Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+		Piece* currentKing = (currentTurn == WHITE ? whiteKing : blackKing);
 		string inCheckResult;
 		if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) {
 			inCheckResult = "You're king is in check. Try Again.";
@@ -396,7 +426,7 @@ bool Board::isMate() {
 			if (!piece->isEmpty() && piece->color == currentColor) {
 				for (int subRow = 0; subRow < 8; subRow++) {
 					for (int subCol = 0; subCol < 8; subCol++) {
-						if ((this->checkMove("-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+						if ((this->checkMove(currentColor, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							return false; // return false at first sign of a move that wouldn't put the king in check
 						}
 					}
@@ -505,25 +535,23 @@ bool Board::gameEndMenu() {
 	cout << " >> Game over ";
 	if (!(this->isStalemate() || this->isThirdRepetition() || this->isInsufficientMaterial() || this->turnSinceLastTake >= 50)) {
 		cout << (this->getCurrentTurn() == WHITE ? dye::light_red(WHITE) : dye::light_purple(BLACK));
+		cout << " lost by: Checkmate." << endl;
 	}
 	else {
-		cout << dye::light_red("Both");
-	}
-	cout << " lost by: ";
-	if (this->isCheckmate()) {
-		cout << "Checkmate." << endl;
-	}
-	else if (this->isStalemate()) {
-		cout << "Stalemate." << endl;
-	}
-	else if (this->isThirdRepetition()) {
-		cout << "Third Repitition" << endl;
-	}
-	else if (this->turnSinceLastTake >= 50) {
-		cout << "50 Moves without takeing a piece." << endl;
-	}
-	else if (this->isInsufficientMaterial()) {
-		cout << "Insufficient Materials." << endl;
+		cout << dye::light_red("Tied");
+		cout << " by: ";
+		if (this->isStalemate()) {
+			cout << "Stalemate." << endl;
+		}
+		else if (this->isThirdRepetition()) {
+			cout << "Third Repitition" << endl;
+		}
+		else if (this->turnSinceLastTake >= 50) {
+			cout << "50 Moves without takeing a piece." << endl;
+		}
+		else if (this->isInsufficientMaterial()) {
+			cout << "Insufficient Materials." << endl;
+		}
 	}
 
 	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
@@ -571,4 +599,159 @@ void Board::titleScreen() {
 		this->titleScreen();
 		break;
 	}
+}
+
+//
+void Board::doComputerMove() {
+	string color = getCurrentTurn();
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+
+	int startRow, startCol, endRow, endCol;
+	double maxPosition = -1000;
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->getPieceAtPosition(row, col);
+			if (piece->color == color) {
+				for (int subRow = 0; subRow < 8; subRow++) {
+					for (int subCol = 0; subCol < 8; subCol++) {
+						if ((this->checkMove(color, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+							Board simulation(this);
+							simulation.move(row, col, subRow, subCol);
+							double position = simulation.evaluateBoard(BLACK);
+							if (position > maxPosition) {
+								maxPosition = position;
+								startRow = row;
+								startCol = col;
+								endRow = subRow;
+								endCol = subCol;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	this->move(startRow, startCol, endRow, endCol);
+}
+
+//
+double Board::evaluateBoard(string color) {
+	string enemyColor = (color == WHITE ? BLACK : WHITE);
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+	Piece* enemyKing = (color == WHITE ? blackKing : whiteKing);
+	double score = 0;
+	score += (8 * (enemyKing->isInCheck(this->grid, -1, -1, -1, -1)));
+	score += (9 * (this->countPieces(QUEEN, color) - this->countPieces(QUEEN, enemyColor)));
+	score += (5 * (this->countPieces(ROOK, color) - this->countPieces(ROOK, enemyColor)));
+	score += (3 * (this->countPieces(BISHOP, color) - this->countPieces(BISHOP, enemyColor)));
+	score += (3 * (this->countPieces(KNIGHT, color) - this->countPieces(KNIGHT, enemyColor)));
+	score += (1 * (this->countPieces(PAWN, color) - this->countPieces(PAWN, enemyColor)));
+	score -= (0.5 * (this->countBlockedPawns(color) - this->countBlockedPawns(enemyColor)));
+	score -= (0.5 * (this->countIsolatedPawns(color) - this->countIsolatedPawns(enemyColor)));
+	score -= (0.5 * (this->countDoubledPawns(color) - this->countDoubledPawns(enemyColor)));
+	score += (0.1 * (this->countTotalLegalMoves(color) - this->countTotalLegalMoves(enemyColor)));
+
+	return score;
+}
+
+//
+int Board::countPieces(char type, string color) {
+	int count = 0;
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			if (this->grid[row][col]->type == type && this->grid[row][col]->color == color) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+//
+int Board::countDoubledPawns(string color) {
+	int totalCount = 0;
+	for (int col = 0; col < 8; col++) {
+		int count = 0;
+		for (int row = 0; row < 8; row++) {
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				count++;
+			}
+		}
+		if (count > 0) {
+			totalCount += count;
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countIsolatedPawns(string color) {
+	int totalCount = 0;
+	for (int col = 0; col < 8; col++) {
+		int prevCount = 0;
+		int currCount = 0;
+		int nextCount = 0;
+		for (int row = 0; row < 8; row++) {
+			if (col > 0 && this->grid[row][col - 1]->type == PAWN && this->grid[row][col - 1]->color == color) {
+				prevCount++;
+			}
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				currCount++;
+			}
+			if (col < 7 && this->grid[row][col + 1]->type == PAWN && this->grid[row][col + 1]->color == color) {
+				prevCount++;
+			}
+		}
+		if (currCount > 0 && prevCount == 0 && nextCount == 0) {
+			totalCount += currCount;
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countBlockedPawns(string color) {
+	int direction = (color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
+	string enemyColor = (color == WHITE ? BLACK : WHITE);
+	int totalCount = 0;
+	for (int row = 0; row < 8; row++) {
+		int count = 0;
+		for (int col = 0; col < 8; col++) {
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				if ((color == WHITE && row == 0) || (color == BLACK && row == 7)) {
+					totalCount++;
+				}
+				else if (!this->grid[row + direction][col]->isEmpty()) {
+					if ((col == 0 || this->grid[row + direction][col - 1]->color != enemyColor) && (col == 7 || this->grid[row + direction][col + 1]->color != enemyColor)) {
+						totalCount++;
+					}
+				}
+			}
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countTotalLegalMoves(string color) {
+	int totalMoves = 0;
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->getPieceAtPosition(row, col);
+			if (piece->color == color) {
+				for (int subRow = 0; subRow < 8; subRow++) {
+					for (int subCol = 0; subCol < 8; subCol++) {
+						if ((this->checkMove(color, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+							totalMoves++;
+						}
+					}
+				}
+			}
+		}
+	}
+	return totalMoves;
 }

@@ -5,7 +5,7 @@
 class Board {
 public:
 	Board(); // default constructor for Board (fills grid with starting layout)
-	Board(bool ignore);
+	Board(Board* original);
 	Piece* grid[8][8];
 	int turnCount = 1;
 	Piece* lastPieceMoved = new Empty();
@@ -22,7 +22,7 @@ public:
 	void translateMoveHistory(MoveHistory move);
 	void move(int startRow, int startCol, int endRow, int endCol);
 	void getInput();
-	string checkMove(string input, int startRow, int startCol, int endRow, int endCol);
+	string checkMove(string currentTurn, string input, int startRow, int startCol, int endRow, int endCol);
 	void printErrorMessage(string error);
 	string getCurrentTurn();
 	bool isCheckmate();
@@ -34,6 +34,13 @@ public:
 	bool isInsufficientMaterial();
 	bool gameEndMenu();
 	void titleScreen();
+	double evaluateBoard(string color);
+	int countPieces(char type, string color);
+	int countDoubledPawns(string color);
+	int countIsolatedPawns(string color);
+	int countBlockedPawns(string color);
+	int countTotalLegalMoves(string color);
+	void doComputerMove();
 	bool isAI = false;
 };
 
