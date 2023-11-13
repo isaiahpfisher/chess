@@ -16,8 +16,17 @@ int main() {
 
         // 
         while (!game.isOver()) {
-            game.print(); // prints the game.grid, pieces and all
-            game.getInput(); // asks for and receives input
+            if (!game.isAI || game.turnCount % 2 == 1) {
+                game.print(); // prints the game.grid, pieces and all
+            }
+
+            if (game.isAI && game.turnCount % 2 == 0) {
+                game.doComputerMove();
+            }
+            else {
+                game.getInput(); // asks for and receives input
+            }
+
             game.turnCount++; // keep track of turn with count (odd red, even = purple)
         }
 

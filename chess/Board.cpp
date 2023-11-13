@@ -585,6 +585,27 @@ void Board::titleScreen() {
 	}
 }
 
+void Board::doComputerMove() {
+	string color = getCurrentTurn();
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->getPieceAtPosition(row, col);
+			if (piece->color == color) {
+				for (int subRow = 0; subRow < 8; subRow++) {
+					for (int subCol = 0; subCol < 8; subCol++) {
+						if ((this->checkMove(color, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+							move(row, col, subRow, subCol);
+ 							return;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 //
 double Board::evaluateBoard(string color) {
 	string enemyColor = (color == WHITE ? BLACK : WHITE);
