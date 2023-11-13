@@ -34,6 +34,12 @@ public:
 	bool isInsufficientMaterial();
 	bool gameEndMenu();
 	void titleScreen();
+	double evaluateBoard(string color);
+	int countPieces(char type, string color);
+	int countDoubledPawns(string color);
+	int countIsolatedPawns(string color);
+	int countBlockedPawns(string color);
+	int countTotalLegalMoves(string color);
 	bool isAI = false;
 };
 

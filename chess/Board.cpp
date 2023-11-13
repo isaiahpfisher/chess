@@ -77,21 +77,9 @@ Board::Board(bool ignore) {
 	this->grid[7][6] = new King(WHITE, 7, 6);
 	this->whiteKing = this->grid[7][6];
 
-	this->grid[5][3] = new Queen(WHITE);
-	this->grid[0][2] = new Queen(BLACK);
-	this->grid[0][0] = new Rook(BLACK);
-	this->grid[7][5] = new Rook(WHITE);
-	this->grid[5][6] = new Rook(WHITE);
-
-	this->grid[6][5] = new Pawn(WHITE);
-	this->grid[6][6] = new Pawn(WHITE);
-	this->grid[6][7] = new Pawn(WHITE);
+	this->grid[4][0] = new Pawn(WHITE);
 	this->grid[3][0] = new Pawn(BLACK);
-	this->grid[1][2] = new Pawn(BLACK);
-	this->grid[3][4] = new Pawn(BLACK);
-	this->grid[2][6] = new Pawn(BLACK);
-	this->grid[3][7] = new Pawn(BLACK);
-
+	this->grid[3][1] = new Pawn(BLACK);
 
 
 
@@ -583,4 +571,108 @@ void Board::titleScreen() {
 		this->titleScreen();
 		break;
 	}
+}
+
+double Board::evaluateBoard(string color) {
+	return 0;
+}
+
+//
+int Board::countPieces(char type, string color) {
+	int count = 0;
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			if (this->grid[row][col]->type == type && this->grid[row][col]->color == color) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+//
+int Board::countDoubledPawns(string color) {
+	int totalCount = 0;
+	for (int col = 0; col < 8; col++) {
+		int count = 0;
+		for (int row = 0; row < 8; row++) {
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				count++;
+			}
+		}
+		if (count > 0) {
+			totalCount += count;
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countIsolatedPawns(string color) {
+	int totalCount = 0;
+	for (int col = 0; col < 8; col++) {
+		int prevCount = 0;
+		int currCount = 0;
+		int nextCount = 0;
+		for (int row = 0; row < 8; row++) {
+			if (col > 0 && this->grid[row][col - 1]->type == PAWN && this->grid[row][col - 1]->color == color) {
+				prevCount++;
+			}
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				currCount++;
+			}
+			if (col < 7 && this->grid[row][col + 1]->type == PAWN && this->grid[row][col + 1]->color == color) {
+				prevCount++;
+			}
+		}
+		if (currCount > 0 && prevCount == 0 && nextCount == 0) {
+			totalCount += currCount;
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countBlockedPawns(string color) {
+	int direction = (color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
+	string enemyColor = (color == WHITE ? BLACK : WHITE);
+	int totalCount = 0;
+	for (int row = 0; row < 8; row++) {
+		int count = 0;
+		for (int col = 0; col < 8; col++) {
+			if (this->grid[row][col]->type == PAWN && this->grid[row][col]->color == color) {
+				if ((color == WHITE && row == 0) || (color == BLACK && row == 7)) {
+					totalCount++;
+				}
+				else if (!this->grid[row + direction][col]->isEmpty()) {
+					if ((col == 0 || this->grid[row + direction][col - 1]->color != enemyColor) && (col == 7 || this->grid[row + direction][col + 1]->color != enemyColor)) {
+						totalCount++;
+					}
+				}
+			}
+		}
+	}
+	return totalCount;
+}
+
+//
+int Board::countTotalLegalMoves(string color) {
+	int totalMoves = 0;
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			Piece* piece = this->getPieceAtPosition(row, col);
+			if (piece->color == color) {
+				for (int subRow = 0; subRow < 8; subRow++) {
+					for (int subCol = 0; subCol < 8; subCol++) {
+						if ((this->checkMove("-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+							totalMoves++;
+						}
+					}
+				}
+			}
+		}
+	}
+	return totalMoves;
 }
