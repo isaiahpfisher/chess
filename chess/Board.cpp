@@ -24,14 +24,14 @@ Board::Board() {
 	this->grid[0][7] = new Rook(BLACK);
 
 	// Black Second Row
-	this->grid[1][0] = new Pawn(BLACK);
-	this->grid[1][1] = new Pawn(BLACK);
-	this->grid[1][2] = new Pawn(BLACK);
-	this->grid[1][3] = new Pawn(BLACK);
-	this->grid[1][4] = new Pawn(BLACK);
-	this->grid[1][5] = new Pawn(BLACK);
-	this->grid[1][6] = new Pawn(BLACK);
-	this->grid[1][7] = new Pawn(BLACK);
+	this->grid[1][0] = new Pawn(BLACK, this->isAI);
+	this->grid[1][1] = new Pawn(BLACK, this->isAI);
+	this->grid[1][2] = new Pawn(BLACK, this->isAI);
+	this->grid[1][3] = new Pawn(BLACK, this->isAI);
+	this->grid[1][4] = new Pawn(BLACK, this->isAI);
+	this->grid[1][5] = new Pawn(BLACK, this->isAI);
+	this->grid[1][6] = new Pawn(BLACK, this->isAI);
+	this->grid[1][7] = new Pawn(BLACK, this->isAI);
 
 	// Empty Spaces
 	for (int row = 2; row < 6; row++) {
@@ -52,14 +52,14 @@ Board::Board() {
 	this->grid[7][7] = new Rook(WHITE);
 
 	// White Second Row
-	this->grid[6][0] = new Pawn(WHITE);
-	this->grid[6][1] = new Pawn(WHITE);
-	this->grid[6][2] = new Pawn(WHITE);
-	this->grid[6][3] = new Pawn(WHITE);
-	this->grid[6][4] = new Pawn(WHITE);
-	this->grid[6][5] = new Pawn(WHITE);
-	this->grid[6][6] = new Pawn(WHITE);
-	this->grid[6][7] = new Pawn(WHITE);
+	this->grid[6][0] = new Pawn(WHITE, false);
+	this->grid[6][1] = new Pawn(WHITE, false);
+	this->grid[6][2] = new Pawn(WHITE, false);
+	this->grid[6][3] = new Pawn(WHITE, false);
+	this->grid[6][4] = new Pawn(WHITE, false);
+	this->grid[6][5] = new Pawn(WHITE, false);
+	this->grid[6][6] = new Pawn(WHITE, false);
+	this->grid[6][7] = new Pawn(WHITE, false);
 }
 
 // copy constructor for board
@@ -94,7 +94,7 @@ Board::Board(Board* game) {
 				this->grid[row][col] = new Knight(currentColor);
 				break;
 			case PAWN:
-				this->grid[row][col] = new Pawn(currentColor);
+				this->grid[row][col] = new Pawn(currentColor, game->grid[row][col]->isAI);
 				break;
 			default:
 				this->grid[row][col] = new Empty();

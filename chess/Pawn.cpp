@@ -6,9 +6,10 @@
 #include "Queen.h"
 #include "Knight.h"
 
-Pawn::Pawn(string color) {
+Pawn::Pawn(string color, bool isAI) {
 	this->color = color;
 	this->type = PAWN;
+	this->isAI = isAI;
 	this->unicode = u8"\u265F";
 }
 
@@ -86,10 +87,14 @@ void Pawn::getPawnPromotion(Piece* grid[8][8]) {
 	cout << " >> " << " Pawn Promotion: what would you like?" << endl;
 	cout << " >>  Q for Queen, R for Rook, B for Bishop, and N for Knight" << endl;
 	cout << " >>  ";
-
-	cin >> userChoice;
-	userChoice = toupper(userChoice);
-	cin.ignore();
+	if (!this->isAI) {
+		cin >> userChoice;
+		userChoice = toupper(userChoice);
+		cin.ignore();
+	}
+	else {
+		userChoice = 'Q';
+	}
 	switch (userChoice) {
 	case ('Q'):
 		grid[this->row][this->col] = new Queen(this->color);
@@ -114,8 +119,3 @@ void Pawn::getPawnPromotion(Piece* grid[8][8]) {
 bool Pawn::isInCheck(Piece* grid[8][8], int startRow, int startCol, int endRow, int endCol) {
 	return false;
 }
-
-// need to finish writing moveResult;
-
-//Pawn Promotion:
-// - if pawn

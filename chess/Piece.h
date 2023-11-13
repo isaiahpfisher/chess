@@ -6,6 +6,7 @@ public:
 	char type;
 	string color; // color (WHITE, BLACK)
 	string unicode = "";
+	bool isAI = false;
 	bool enPassant = false; // 
 	bool hasMoved = false; // 
 	int row; // 
