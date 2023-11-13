@@ -62,39 +62,57 @@ Board::Board() {
 	this->grid[6][7] = new Pawn(WHITE);
 }
 
-// non-default for testing
-Board::Board(bool ignore) {
+// copy constructor for board
+Board::Board(Board* game) {
+	this->turnCount = game->turnCount;
+
+	this->turnSinceLastTake = game->turnSinceLastTake;
+	this->history = game->history;
+	this->moveHistory = game->moveHistory;
+	this->isAI = game->isAI;
+
 	for (int row = 0; row < 8; row++) {
 		for (int col = 0; col < 8; col++) {
-			this->grid[row][col] = new Empty();
+			Piece* piece = game->grid[row][col];
+			string currentColor = piece->color;
+
+			switch (piece->type) {
+			case KING:
+				this->grid[row][col] = new King(currentColor, row, col);
+				(currentColor == WHITE ? this->whiteKing = this->grid[row][col] : this->blackKing = this->grid[row][col]);
+				break;
+			case QUEEN:
+				this->grid[row][col] = new Queen(currentColor);
+				break;
+			case ROOK:
+				this->grid[row][col] = new Rook(currentColor);
+				break;
+			case BISHOP:
+				this->grid[row][col] = new Bishop(currentColor);
+				break;
+			case KNIGHT:
+				this->grid[row][col] = new Knight(currentColor);
+				break;
+			case PAWN:
+				this->grid[row][col] = new Pawn(currentColor);
+				break;
+			default:
+				this->grid[row][col] = new Empty();
+			}
+
+			this->grid[row][col]->type = game->grid[row][col]->type;
+			this->grid[row][col]->color = game->grid[row][col]->color;
+			this->grid[row][col]->unicode = game->grid[row][col]->unicode;
+			this->grid[row][col]->enPassant = game->grid[row][col]->enPassant;
+			this->grid[row][col]->hasMoved = game->grid[row][col]->hasMoved;
+			this->grid[row][col]->row = game->grid[row][col]->row;
+			this->grid[row][col]->col = game->grid[row][col]->col;
+
+			if (row == game->lastPieceMoved->row && col == game->lastPieceMoved->col) {
+				this->lastPieceMoved = this->grid[row][col];
+			}
 		}
 	}
-
-	// position kings!
-	this->grid[1][5] = new King(BLACK, 1, 5);
-	this->blackKing = this->grid[1][5];
-
-	this->grid[7][6] = new King(WHITE, 7, 6);
-	this->whiteKing = this->grid[7][6];
-
-	this->grid[5][3] = new Queen(WHITE);
-	this->grid[0][2] = new Queen(BLACK);
-	this->grid[0][0] = new Rook(BLACK);
-	this->grid[7][5] = new Rook(WHITE);
-	this->grid[5][6] = new Rook(WHITE);
-
-	this->grid[6][5] = new Pawn(WHITE);
-	this->grid[6][6] = new Pawn(WHITE);
-	this->grid[6][7] = new Pawn(WHITE);
-	this->grid[3][0] = new Pawn(BLACK);
-	this->grid[1][2] = new Pawn(BLACK);
-	this->grid[3][4] = new Pawn(BLACK);
-	this->grid[2][6] = new Pawn(BLACK);
-	this->grid[3][7] = new Pawn(BLACK);
-
-
-
-
 }
 
 // prints the board
@@ -585,6 +603,7 @@ void Board::titleScreen() {
 	}
 }
 
+//
 void Board::doComputerMove() {
 	string color = getCurrentTurn();
 	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);

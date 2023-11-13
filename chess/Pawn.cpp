@@ -30,7 +30,7 @@ string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 		checkResult = "Pawns can't move sideways. Try Again.";
 	}
 	// tried to move more than one/two spaces forward
-	else if (abs(startRow - endRow) > 1 + this->canMoveTwo) {
+	else if (abs(startRow - endRow) > 1 + !this->hasMoved) {
 		checkResult = "Pawns can't move that many spaces. Try Again.";
 	}
 	// tried to move forward into enemny
@@ -65,15 +65,14 @@ string Pawn::move(Piece* grid[8][8], int startRow, int startCol, int endRow, int
 	}
 
 	// so this pawn can't move two ever again
-	this->canMoveTwo = false;
 	this->row = endRow;
 	this->col = endCol;
+	this->hasMoved = true;
 
 	// 
 	if (endRow == (this->color == WHITE ? 0 : 7)) {
 		getPawnPromotion(grid);
 	}
-
 	return moveResult;
 }
 

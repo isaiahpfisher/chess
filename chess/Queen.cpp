@@ -25,7 +25,7 @@ string Queen::move(Piece* grid[8][8], int startRow, int startCol, int endRow, in
 	
 	this->row = endRow;
 	this->col = endCol;
-
+	this->hasMoved = true;
 	return "";
 }
 

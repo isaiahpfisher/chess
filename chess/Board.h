@@ -5,7 +5,7 @@
 class Board {
 public:
 	Board(); // default constructor for Board (fills grid with starting layout)
-	Board(bool ignore);
+	Board(Board* original);
 	Piece* grid[8][8];
 	int turnCount = 1;
 	Piece* lastPieceMoved = new Empty();
