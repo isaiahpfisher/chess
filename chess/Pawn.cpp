@@ -18,7 +18,7 @@ string Pawn::isValidMove(Piece* grid[8][8], int startRow, int startCol, int endR
 	int direction = (this->color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION);
 	
 	// moved more than one column to the side
-	if (abs(startCol - endCol) > 1) {
+	if ((abs(startCol - endCol) > 1) || (abs(startCol - endCol) > 0 && abs(startRow - endRow) > 1)) {
 		checkResult = "You SiCkO!!!!! Why are you trying to move that way. Try Again.";
 	}
 	// tried to go backwards
