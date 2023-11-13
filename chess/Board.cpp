@@ -299,7 +299,7 @@ void Board::getInput() {
 	endCol = toupper(input[3]) - 'A';
 	endRow = 8 - (input[4] - '0');
 	
-	string checkResult = checkMove(input, startRow, startCol, endRow, endCol);
+	string checkResult = checkMove(this->getCurrentTurn(), input, startRow, startCol, endRow, endCol);
 	if (checkResult == "") {
 		move(startRow, startCol, endRow, endCol);
 	}
@@ -311,7 +311,7 @@ void Board::getInput() {
 }
 
 // Checks if moves are valid
-string Board::checkMove(string input, int startRow, int startCol, int endRow, int endCol){
+string Board::checkMove(string currentTurn, string input, int startRow, int startCol, int endRow, int endCol){
 	
 	// get pieces/spaces
 	Piece* startPiece = this->getPieceAtPosition(startRow, startCol);
@@ -329,8 +329,8 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 
 	// Check if startPiece is from the right team
-	else if (this->getCurrentTurn() != startPiece->color) {
-		checkResult = "It's " + (this->getCurrentTurn() == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
+	else if (currentTurn != startPiece->color) {
+		checkResult = "It's " + (currentTurn == WHITE ? WHITE : BLACK) + "'s turn. Try Again.";
 	}
 
 	// Checks if move is on top of same team
@@ -347,7 +347,7 @@ string Board::checkMove(string input, int startRow, int startCol, int endRow, in
 	}
 	// checking for check
 	if (checkResult == "") {
-		Piece* currentKing = (this->getCurrentTurn() == WHITE ? whiteKing : blackKing);
+		Piece* currentKing = (currentTurn == WHITE ? whiteKing : blackKing);
 		string inCheckResult;
 		if (currentKing->isInCheck(this->grid, -1, -1, -1, -1)) {
 			inCheckResult = "You're king is in check. Try Again.";
@@ -408,7 +408,7 @@ bool Board::isMate() {
 			if (!piece->isEmpty() && piece->color == currentColor) {
 				for (int subRow = 0; subRow < 8; subRow++) {
 					for (int subCol = 0; subCol < 8; subCol++) {
-						if ((this->checkMove("-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+						if ((this->checkMove(currentColor, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							return false; // return false at first sign of a move that wouldn't put the king in check
 						}
 					}
@@ -585,8 +585,22 @@ void Board::titleScreen() {
 	}
 }
 
+//
 double Board::evaluateBoard(string color) {
-	return 0;
+	string enemyColor = (color == WHITE ? BLACK : WHITE);
+	double score = 0;
+	score += (200 * (this->countPieces(KING, color) - this->countPieces(KING, enemyColor)));
+	score += (9 * (this->countPieces(QUEEN, color) - this->countPieces(QUEEN, enemyColor)));
+	score += (5 * (this->countPieces(ROOK, color) - this->countPieces(ROOK, enemyColor)));
+	score += (3 * (this->countPieces(BISHOP, color) - this->countPieces(BISHOP, enemyColor)));
+	score += (3 * (this->countPieces(KNIGHT, color) - this->countPieces(KNIGHT, enemyColor)));
+	score += (1 * (this->countPieces(PAWN, color) - this->countPieces(PAWN, enemyColor)));
+	score -= (0.5 * (this->countBlockedPawns(color) - this->countBlockedPawns(enemyColor)));
+	score -= (0.5 * (this->countIsolatedPawns(color) - this->countIsolatedPawns(enemyColor)));
+	score -= (0.5 * (this->countDoubledPawns(color) - this->countDoubledPawns(enemyColor)));
+	score += (0.1 * (this->countTotalLegalMoves(color) - this->countTotalLegalMoves(enemyColor)));
+
+	return score;
 }
 
 //
@@ -678,7 +692,7 @@ int Board::countTotalLegalMoves(string color) {
 			if (piece->color == color) {
 				for (int subRow = 0; subRow < 8; subRow++) {
 					for (int subCol = 0; subCol < 8; subCol++) {
-						if ((this->checkMove("-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
+						if ((this->checkMove(color, "-1", row, col, subRow, subCol) == "") && !currentKing->isInCheck(this->grid, row, col, subRow, subCol)) {
 							totalMoves++;
 						}
 					}

@@ -22,7 +22,7 @@ public:
 	void translateMoveHistory(MoveHistory move);
 	void move(int startRow, int startCol, int endRow, int endCol);
 	void getInput();
-	string checkMove(string input, int startRow, int startCol, int endRow, int endCol);
+	string checkMove(string currentTurn, string input, int startRow, int startCol, int endRow, int endCol);
 	void printErrorMessage(string error);
 	string getCurrentTurn();
 	bool isCheckmate();
