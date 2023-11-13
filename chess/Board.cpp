@@ -535,25 +535,23 @@ bool Board::gameEndMenu() {
 	cout << " >> Game over ";
 	if (!(this->isStalemate() || this->isThirdRepetition() || this->isInsufficientMaterial() || this->turnSinceLastTake >= 50)) {
 		cout << (this->getCurrentTurn() == WHITE ? dye::light_red(WHITE) : dye::light_purple(BLACK));
+		cout << " lost by: Checkmate." << endl;
 	}
 	else {
-		cout << dye::light_red("Both");
-	}
-	cout << " lost by: ";
-	if (this->isCheckmate()) {
-		cout << "Checkmate." << endl;
-	}
-	else if (this->isStalemate()) {
-		cout << "Stalemate." << endl;
-	}
-	else if (this->isThirdRepetition()) {
-		cout << "Third Repitition" << endl;
-	}
-	else if (this->turnSinceLastTake >= 50) {
-		cout << "50 Moves without takeing a piece." << endl;
-	}
-	else if (this->isInsufficientMaterial()) {
-		cout << "Insufficient Materials." << endl;
+		cout << dye::light_red("Tied");
+		cout << " by: ";
+		if (this->isStalemate()) {
+			cout << "Stalemate." << endl;
+		}
+		else if (this->isThirdRepetition()) {
+			cout << "Third Repitition" << endl;
+		}
+		else if (this->turnSinceLastTake >= 50) {
+			cout << "50 Moves without takeing a piece." << endl;
+		}
+		else if (this->isInsufficientMaterial()) {
+			cout << "Insufficient Materials." << endl;
+		}
 	}
 
 	cout << " >> Would you like to play again? (Y for yes N for no)." << endl;
