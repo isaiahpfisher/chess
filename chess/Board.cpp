@@ -640,8 +640,10 @@ void Board::doComputerMove() {
 //
 double Board::evaluateBoard(string color) {
 	string enemyColor = (color == WHITE ? BLACK : WHITE);
+	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
+	Piece* enemyKing = (color == WHITE ? blackKing : whiteKing);
 	double score = 0;
-	score += (200 * (this->countPieces(KING, color) - this->countPieces(KING, enemyColor)));
+	score += (8 * (enemyKing->isInCheck(this->grid, -1, -1, -1, -1)));
 	score += (9 * (this->countPieces(QUEEN, color) - this->countPieces(QUEEN, enemyColor)));
 	score += (5 * (this->countPieces(ROOK, color) - this->countPieces(ROOK, enemyColor)));
 	score += (3 * (this->countPieces(BISHOP, color) - this->countPieces(BISHOP, enemyColor)));
