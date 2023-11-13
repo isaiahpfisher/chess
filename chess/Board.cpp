@@ -572,4 +572,3 @@ void Board::titleScreen() {
 		break;
 	}
 }
-
