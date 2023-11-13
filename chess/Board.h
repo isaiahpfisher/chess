@@ -40,7 +40,7 @@ public:
 	int countIsolatedPawns(string color);
 	int countBlockedPawns(string color);
 	int countTotalLegalMoves(string color);
-	void doComputerMove();
+	void doComputerMove(int levels);
 	bool isAI = false;
 };
 

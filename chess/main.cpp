@@ -21,7 +21,7 @@ int main() {
             }
 
             if (game.isAI && game.turnCount % 2 == 0) {
-                game.doComputerMove();
+                game.doComputerMove(2);
             }
             else {
                 game.getInput(); // asks for and receives input

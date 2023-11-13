@@ -602,7 +602,7 @@ void Board::titleScreen() {
 }
 
 //
-void Board::doComputerMove() {
+void Board::doComputerMove(int levels) {
 	string color = getCurrentTurn();
 	Piece* currentKing = (color == WHITE ? whiteKing : blackKing);
 
@@ -626,7 +626,6 @@ void Board::doComputerMove() {
 								endRow = subRow;
 								endCol = subCol;
 							}
-
 						}
 					}
 				}
