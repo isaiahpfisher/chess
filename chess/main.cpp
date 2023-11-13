@@ -12,6 +12,8 @@ int main() {
     while (playAgain) {
         Board game; // game has a game.grid property that holds an 8x8 array filled with the right pieces for game start
 
+  
+
         game.titleScreen();
 
         // 
